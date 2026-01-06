@@ -1,6 +1,6 @@
 {
   "name": "pixel-ingest-dev",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "type": "module",
   "engines": {
@@ -10,6 +10,7 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "@google-cloud/bigquery": "^7.9.0"
   }
 }
