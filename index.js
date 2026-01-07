@@ -7,6 +7,7 @@ app.disable("x-powered-by");
 /* =========================
    CORS (must be first)
 ========================= */
+
 app.use(function (req, res, next) {
   const origin = req.get("origin");
 
@@ -32,6 +33,7 @@ app.use(function (req, res, next) {
 /* =========================
    Body parsing
 ========================= */
+
 app.use(
   express.json({
     limit: "256kb",
@@ -42,6 +44,7 @@ app.use(
 /* =========================
    BigQuery (RAW ledger)
 ========================= */
+
 const bq = new BigQuery();
 const DATASET = "raw_dev";
 const TABLE = "events_raw";
@@ -49,32 +52,48 @@ const TABLE = "events_raw";
 /* =========================
    Track endpoint (RAW)
 ========================= */
+
 app.post("/track", async function (req, res) {
   try {
-    const body = req.body || {};
+    const body = req.body;
 
-    const row = {
-  		received_at: new Date().toISOString(),
-  		source: body.source || "unknown",
-  		event_id: body.event_id || null,
-  		event_name: body.event_name || null,
-  		payload: JSON.stringify(body.payload || body.data || body || {}),
-  		session_key: body.session_key || null,
-  		session_start: body.session_start || null,
-  		th_vid: body.th_vid || null,
-  		timestamp: body.timestamp || null
-	};
+    const events = Array.isArray(body && body.events)
+      ? body.events
+      : Array.isArray(body)
+        ? body
+        : body
+          ? [body]
+          : [];
 
-    await bq
-      .dataset(DATASET)
-      .table(TABLE)
-      .insert([row]);
+    if (events.length) {
+      const rows = [];
+      const receivedAt = new Date().toISOString();
+
+      for (let i = 0; i < events.length; i++) {
+        const ev = events[i];
+
+        rows.push({
+  			received_at: receivedAt,
+  			data_source: ev.data_source || ev.source || "unknown",
+  			event_name: ev.event_name || ev.event || null,
+  			event_id: ev.event_id || null,
+  			event_time: ev.event_time || ev.timestamp || null,
+
+  			// THIS IS THE KEY LINE
+  			raw: JSON.stringify(ev)
+		});
+      }
+
+      await bq.dataset(DATASET).table(TABLE).insert(rows);
+    }
   } catch (err) {
-    // RAW must never block
-    console.error("[pixel-ingest-dev] insert error", err.message);
-  }
+  console.error(
+    "[pixel-ingest-dev] insert error",
+    err.message,
+    err.errors || err
+  );
+}
 
-  // Contract: ALWAYS 204
   res.status(204).end();
 });
 
