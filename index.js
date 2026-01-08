@@ -110,7 +110,7 @@ app.post("/track", async function (req, res) {
    Health
 ========================= */
 
-app.get("/healthz", function (_req, res) {
+app.get("/health", function (_req, res) {
   res.status(200).send("ok");
 });
 
