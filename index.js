@@ -31,6 +31,15 @@ app.use(function (req, res, next) {
 });
 
 /* =========================
+   Request logging
+========================= */
+
+app.use(function (req, _res, next) {
+  console.log("[REQ]", req.method, req.url);
+  next();
+});
+
+/* =========================
    Body parsing
 ========================= */
 
