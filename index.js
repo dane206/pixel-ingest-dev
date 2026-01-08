@@ -100,13 +100,27 @@ app.post("/track", async function (req, res) {
 /* =========================
    Health
 ========================= */
+
 app.get("/healthz", function (_req, res) {
   res.status(200).send("ok");
 });
 
 /* =========================
+   Version
+========================= */
+
+app.get("/version", function (_req, res) {
+  res.status(200).json({
+    service: "pixel-ingest-dev",
+    git_sha: process.env.GIT_SHA || "unknown",
+    deployed_at: process.env.DEPLOYED_AT || null
+  });
+});
+
+/* =========================
    Boot
 ========================= */
+
 const PORT = Number(process.env.PORT || 8080);
 app.listen(PORT, function () {
   console.log("[pixel-ingest-dev] listening", { port: PORT });
