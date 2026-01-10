@@ -5,9 +5,8 @@ const app = express();
 app.disable("x-powered-by");
 
 /* =========================
-   CORS (must be first)
+   CORS
 ========================= */
-
 app.use(function (req, res, next) {
   const origin = req.get("origin");
 
@@ -31,18 +30,8 @@ app.use(function (req, res, next) {
 });
 
 /* =========================
-   Request logging
-========================= */
-
-app.use(function (req, _res, next) {
-  console.log("[REQ]", req.method, req.url);
-  next();
-});
-
-/* =========================
    Body parsing
 ========================= */
-
 app.use(
   express.json({
     limit: "256kb",
@@ -53,16 +42,21 @@ app.use(
 /* =========================
    BigQuery (RAW ledger)
 ========================= */
-
 const bq = new BigQuery();
-const DATASET = "raw_dev";
-const TABLE = "events_raw";
+
+const DATASET = process.env.BQ_DATASET || "raw_dev";
+const TABLE   = process.env.BQ_TABLE   || "events_raw";
 
 /* =========================
-   Track endpoint (RAW)
+   Contract
 ========================= */
+const API_VERSION = "v1";
+const V1_TRACK_PATH = "/v1/track";
 
-app.post("/track", async function (req, res) {
+/* =========================
+   Track handler
+========================= */
+async function handleTrack(req, res) {
   try {
     const body = req.body;
 
@@ -79,58 +73,48 @@ app.post("/track", async function (req, res) {
       const receivedAt = new Date().toISOString();
 
       for (let i = 0; i < events.length; i++) {
-        const ev = events[i];
+        const ev = events[i] || {};
 
         rows.push({
-  			received_at: receivedAt,
-  			data_source: ev.data_source || ev.source || "unknown",
-  			event_name: ev.event_name || ev.event || null,
-  			event_id: ev.event_id || null,
-  			event_time: ev.event_time || ev.timestamp || null,
-
-  			// THIS IS THE KEY LINE
-  			raw: JSON.stringify(ev)
-		});
+          received_at: receivedAt,
+          data_source: ev.data_source || ev.source || "unknown",
+          event_name: ev.event_name || ev.event || null,
+          event_id: ev.event_id || null,
+          event_time: ev.event_time || ev.timestamp || null,
+          raw: JSON.stringify(ev)
+        });
       }
 
       await bq.dataset(DATASET).table(TABLE).insert(rows);
     }
   } catch (err) {
-  console.error(
-    "[pixel-ingest-dev] insert error",
-    err.message,
-    err.errors || err
-  );
-}
+    console.error("[pixel-ingest-dev] insert error", err);
+  }
 
   res.status(204).end();
-});
+}
 
 /* =========================
-   Health
+   Routes
 ========================= */
+app.post(V1_TRACK_PATH, handleTrack); // canonical
+app.post("/track", handleTrack);      // back-compat
 
 app.get("/health", function (_req, res) {
   res.status(200).send("ok");
 });
 
-/* =========================
-   Version
-========================= */
-
 app.get("/version", function (_req, res) {
   res.status(200).json({
     service: "pixel-ingest-dev",
-    git_sha: process.env.GIT_SHA || "unknown",
-    deployed_at: process.env.DEPLOYED_AT || null
+    api_version: API_VERSION
   });
 });
 
 /* =========================
    Boot
 ========================= */
-
 const PORT = Number(process.env.PORT || 8080);
 app.listen(PORT, function () {
-  console.log("[pixel-ingest-dev] listening", { port: PORT });
+  console.log("[pixel-ingest-dev] listening", { port: PORT, api_version: API_VERSION });
 });
