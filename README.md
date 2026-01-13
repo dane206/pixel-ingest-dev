@@ -114,6 +114,8 @@ Schema stability is more important than naming perfection.
 
 ## Explicit Non-Goals
 
+Attribution (FT/LT) is intentionally out of scope for the raw ingest + identity context layer; if present, it is caller-provided and treated as opaque.
+
 The RAW ingest layer does **not**:
 
 * Define truth
