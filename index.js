@@ -85,7 +85,7 @@ async function handleTrack(req, res) {
         });
       }
 
-      await bq.dataset(DATASET).table(TABLE).insert(rows);
+      await bq.dataset(DATASET).table(TABLE).insert(rows, { ignoreUnknownValues: false, skipInvalidRows: false });
     }
   } catch (err) {
     console.error("[pixel-ingest-dev] insert error", err);
