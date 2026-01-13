@@ -76,11 +76,11 @@ async function handleTrack(req, res) {
         const ev = events[i] || {};
 
         rows.push({
-          received_at: receivedAt,
+          received_at: new Date(receivedAt),
           data_source: ev.data_source || ev.source || "unknown",
           event_name: ev.event_name || ev.event || null,
           event_id: ev.event_id || null,
-          event_time: ev.event_time || ev.timestamp || null,
+          event_time: (ev.event_time || ev.timestamp) ? new Date(ev.event_time || ev.timestamp) : null,
           raw: ev
         });
       }
