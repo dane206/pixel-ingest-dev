@@ -9,6 +9,9 @@ This document is the **single source of truth** for the raw event ingestion pipe
 
 If something is not documented here, it is **not guaranteed**.
 
+* local: `/Users/dane/projects/pixel-ingest-dev`
+* repo: `https://github.com/dane206/pixel-ingest-dev`
+
 ---
 
 ## Service: pixel-ingest-dev
