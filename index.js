@@ -184,7 +184,7 @@ async function handleTrack(req, res) {
           event_name: ev.event_name || ev.event || null,
           event_id: ev.event_id || null,
           event_time: (ev.event_time || ev.timestamp) ? new Date(ev.event_time || ev.timestamp) : null,
-          raw: JSON.parse(JSON.stringify(ev))
+          raw: (JSON.stringify(ev))
         });
       }
 
