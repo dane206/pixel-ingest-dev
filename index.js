@@ -4,6 +4,11 @@ import { BigQuery } from "@google-cloud/bigquery";
 const app = express();
 app.disable("x-powered-by");
 
+app.use(function (req, _res, next) {
+  console.log("[pixel-ingest-dev]", req.method, req.path);
+  next();
+});
+
 const SERVICE_NAME = process.env.K_SERVICE || "pixel-ingest";
 const API_VERSION = "v1";
 const V1_TRACK_PATH = "/v1/track";
@@ -11,6 +16,7 @@ const V1_TRACK_PATH = "/v1/track";
 /* =========================
    CORS
 ========================= */
+
 app.use(function (req, res, next) {
   const origin = req.get("origin");
 
@@ -47,6 +53,7 @@ app.use(
    BigQuery (RAW ledger)
    - required env vars
 ========================= */
+
 const bq = new BigQuery();
 
 const DATASET = process.env.BQ_DATASET;
@@ -59,6 +66,7 @@ if (!DATASET || !TABLE) {
 /* =========================
    GA4 Measurement Protocol
 ========================= */
+
 const GA4_MEASUREMENT_ID = process.env.GA4_MEASUREMENT_ID || null;
 const GA4_API_SECRET = process.env.GA4_API_SECRET || null;
 const GA4_MP_MODE = process.env.GA4_MP_MODE || "collect"; // "collect" | "debug"
@@ -150,6 +158,7 @@ async function forwardToGA4MP(ev) {
 /* =========================
    Track handler
 ========================= */
+
 async function handleTrack(req, res) {
   const body = req.body;
 
@@ -199,6 +208,7 @@ async function handleTrack(req, res) {
 /* =========================
    Routes
 ========================= */
+
 app.post(V1_TRACK_PATH, handleTrack); // canonical
 app.post("/track", handleTrack);      // back-compat
 
@@ -216,6 +226,7 @@ app.get("/version", function (_req, res) {
 /* =========================
    Boot
 ========================= */
+
 const PORT = Number(process.env.PORT || 8080);
 app.listen(PORT, function () {
   console.log("[" + SERVICE_NAME + "] listening", { port: PORT, api_version: API_VERSION });
