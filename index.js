@@ -199,8 +199,19 @@ async function handleTrack(req, res) {
       }
     }
   } catch (err) {
-    console.error("[" + SERVICE_NAME + "] ingest error", err);
+  if (err.name === "PartialFailureError" && Array.isArray(err.errors)) {
+    for (const e of err.errors) {
+      console.error(
+        "[pixel-ingest-dev] bq row error",
+        JSON.stringify(e.errors, null, 2),
+        "row:",
+        JSON.stringify(e.row, null, 2)
+      );
+    }
+  } else {
+    console.error("[pixel-ingest-dev] bq error", err);
   }
+}
 
   res.status(204).end();
 }
