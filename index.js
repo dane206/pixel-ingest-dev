@@ -79,10 +79,10 @@ async function getFetch() {
 
 function mapTerraToGa4EventName(name) {
   switch (name) {
-    case "terra_begin_checkout": return "begin_checkout";
-    case "terra_add_shipping_info": return "add_shipping_info";
-    case "terra_add_payment_info": return "add_payment_info";
-    case "terra_purchase": return "purchase";
+    case "checkout_started": return "begin_checkout";
+    case "checkout_shipping_info_submitted": return "add_shipping_info";
+    case "payment_info_submitted": return "add_payment_info";
+    case "checkout_completed": return "purchase";
     default: return null;
   }
 }
@@ -95,38 +95,56 @@ function safeNumber(x) {
 async function forwardToGA4MP(ev) {
   if (!GA4_MEASUREMENT_ID || !GA4_API_SECRET) return;
 
-  const terraName = ev.event_name || ev.event || null;
-  const ga4Name = mapTerraToGa4EventName(terraName);
+  const ga4Name = mapTerraToGa4EventName(ev.event_name);
   if (!ga4Name) return;
 
-  const payload = ev.payload || {};
-  const eco = payload.ecommerce || {};
-  const items = Array.isArray(eco.items) ? eco.items : [];
+  // ✅ THIS IS THE FIX — read Shopify checkout structure
+  const checkout =
+    ev.raw &&
+    ev.raw.data &&
+    ev.raw.data.checkout
+      ? ev.raw.data.checkout
+      : null;
 
-  let clientId = payload.ga4_client_id || null;
-  if (!clientId) clientId = String(Math.floor(Math.random() * 1e10)) + "." + String(Date.now());
+  if (!checkout) return;
+
+  const lines = checkout.lineItems || [];
+  if (!lines.length) return;
+
+  const items = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    const li = lines[i];
+    if (!li || !li.variant) continue;
+
+    const productId = String(li.variant.product.id).replace(/\D/g, "");
+    const variantId = String(li.variant.id).replace(/\D/g, "");
+
+    items.push({
+      item_id: "shopify_US_" + productId + "_" + variantId,
+      item_name: li.title || "",
+      price: Number(li.variant.price.amount),
+      quantity: li.quantity || 1
+    });
+  }
+
+  let clientId =
+    (ev.raw && ev.raw.clientId) ||
+    String(Math.floor(Math.random() * 1e10)) + "." + String(Date.now());
 
   const params = {
-    currency: eco.currency || "USD",
-    value: safeNumber(eco.value) || 0,
-    items: items,
-
-    transaction_id: eco.transaction_id ? String(eco.transaction_id) : undefined,
-    shipping: safeNumber(eco.shipping),
-    tax: safeNumber(eco.tax),
-    shipping_tier: eco.shipping_tier ? String(eco.shipping_tier) : undefined,
-
-    session_id: payload.ga4_session_id ? String(payload.ga4_session_id) : undefined,
-    session_number: safeNumber(payload.ga4_session_number),
-
-    engagement_time_msec: 1,
-
-    terra_event_id: ev.event_id || undefined,
-    terra_event_name: terraName || undefined
+    currency: checkout.currencyCode,
+    value: Number(checkout.totalPrice.amount),
+    items,
+    transaction_id:
+      checkout.order && checkout.order.id
+        ? String(checkout.order.id).replace(/\D/g, "")
+        : undefined,
+    engagement_time_msec: 1
   };
 
   Object.keys(params).forEach((k) => {
-    if (params[k] === undefined || params[k] === null) delete params[k];
+    if (params[k] === undefined) delete params[k];
   });
 
   const mpBody = {
@@ -135,7 +153,7 @@ async function forwardToGA4MP(ev) {
   };
 
   const base =
-    (GA4_MP_MODE === "debug")
+    GA4_MP_MODE === "debug"
       ? "https://www.google-analytics.com/debug/mp/collect"
       : "https://www.google-analytics.com/mp/collect";
 
