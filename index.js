@@ -128,19 +128,32 @@ async function forwardToGA4MP(ev) {
     });
   }
 
-  let clientId =
-    (ev.raw && ev.raw.clientId) ||
-    String(Math.floor(Math.random() * 1e10)) + "." + String(Date.now());
+  const attrs = checkout.attributes || checkout.noteAttributes || {};
+
+  const clientId =
+  	attrs.ga4_client_id ||
+  	(ev.raw && ev.raw.clientId) ||
+  	null;
+
+  if (!clientId) {
+  	console.log("[ga4-mp] missing ga4_client_id — cannot stitch session");
+  	return;
+  }
 
   const params = {
-    currency: checkout.currencyCode,
-    value: Number(checkout.totalPrice.amount),
-    items,
-    transaction_id:
+  	currency: checkout.currencyCode,
+  	value: Number(checkout.totalPrice.amount),
+  	items,
+  	transaction_id:
       checkout.order && checkout.order.id
-        ? String(checkout.order.id).replace(/\D/g, "")
-        : undefined,
-    engagement_time_msec: 1
+      	? String(checkout.order.id).replace(/\D/g, "")
+      	: undefined,
+
+  	// ✅ session stitching
+  	session_id: attrs.ga4_session_id ? Number(attrs.ga4_session_id) : undefined,
+  	session_number: attrs.ga4_session_number ? Number(attrs.ga4_session_number) : undefined,
+
+  	engagement_time_msec: 1
   };
 
   Object.keys(params).forEach((k) => {
