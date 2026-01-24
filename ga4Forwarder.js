@@ -49,7 +49,8 @@ export async function forwardCheckoutToGA4(ev) {
   const name = ga4Name(ev.event_name);
   if (!name) return;
 
-  const checkout = ev?.data?.checkout;
+  const raw = typeof ev.raw === "string" ? JSON.parse(ev.raw) : ev.raw;
+  const checkout = raw?.data?.checkout;
   if (!checkout) return;
 
   const attrs = attrsToObject(
