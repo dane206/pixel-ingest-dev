@@ -1,41 +1,85 @@
-// ga4Forwarder.js
-
-const fetch = require("node-fetch");
-
-const GA4_MEASUREMENT_ID = process.env.GA4_MEASUREMENT_ID;
-const GA4_API_SECRET     = process.env.GA4_API_SECRET;
+const MID = process.env.GA4_MEASUREMENT_ID;
+const SECRET = process.env.GA4_API_SECRET;
 
 function digits(x) {
   return String(x || "").replace(/\D/g, "");
 }
 
+function attrsToObject(arr) {
+  if (!Array.isArray(arr)) return {};
+  const o = {};
+  for (const a of arr) {
+    if (a && a.key) o[a.key] = a.value;
+  }
+  return o;
+}
+
 function buildItems(checkout) {
-  const out = [];
-  const lines = checkout.lineItems || [];
+  const items = [];
+  for (const li of checkout.lineItems || []) {
+    if (!li?.variant) continue;
 
-  for (const li of lines) {
-    if (!li || !li.variant) continue;
-
-    const productId = digits(li.variant.product && li.variant.product.id);
+    const productId = digits(li.variant.product?.id);
     const variantId = digits(li.variant.id);
     if (!productId || !variantId) continue;
 
-    out.push({
+    items.push({
       item_id: `shopify_US_${productId}_${variantId}`,
       item_name: li.title || "",
-      price: Number(li.variant.price && li.variant.price.amount),
+      price: Number(li.variant.price?.amount),
       quantity: li.quantity || 1
     });
   }
-
-  return out;
+  return items;
 }
 
-async function sendMP(clientId, name, params) {
+function ga4Name(shopifyName) {
+  switch (shopifyName) {
+    case "checkout_started": return "begin_checkout";
+    case "checkout_shipping_info_submitted": return "add_shipping_info";
+    case "payment_info_submitted": return "add_payment_info";
+    case "checkout_completed": return "purchase";
+    default: return null;
+  }
+}
+
+export async function forwardCheckoutToGA4(ev) {
+  if (!MID || !SECRET) return;
+
+  const name = ga4Name(ev.event_name);
+  if (!name) return;
+
+  const checkout = ev?.data?.checkout;
+  if (!checkout) return;
+
+  const attrs = attrsToObject(
+    checkout.attributes || checkout.noteAttributes
+  );
+
+  const clientId =
+    attrs.terra_ga_cid ||  // from your bridge
+    ev?.clientId;
+
   if (!clientId) return;
 
+  const items = buildItems(checkout);
+  if (!items.length) return;
+
+  const params = {
+    currency: checkout.currencyCode,
+    value: Number(checkout.totalPrice?.amount),
+    items,
+    engagement_time_msec: 1,
+    session_id: Number(attrs.terra_ga_sid),
+    session_number: Number(attrs.terra_ga_sn),
+  };
+
+  if (name === "purchase") {
+    params.transaction_id = digits(checkout.order?.id);
+  }
+
   await fetch(
-    `https://www.google-analytics.com/mp/collect?measurement_id=${GA4_MEASUREMENT_ID}&api_secret=${GA4_API_SECRET}`,
+    `https://www.google-analytics.com/mp/collect?measurement_id=${MID}&api_secret=${SECRET}`,
     {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -46,43 +90,3 @@ async function sendMP(clientId, name, params) {
     }
   );
 }
-
-async function forwardCheckoutToGA4(raw) {
-  const checkout = raw?.data?.checkout;
-  if (!checkout) return;
-
-  const clientId = raw?.clientId; // comes from Shopify pixel context
-  if (!clientId) return;
-
-  const items = buildItems(checkout);
-  if (!items.length) return;
-
-  const base = {
-    currency: checkout.currencyCode,
-    value: Number(checkout.totalPrice?.amount),
-    items
-  };
-
-  switch (raw.name) {
-    case "checkout_started":
-      await sendMP(clientId, "begin_checkout", base);
-      break;
-
-    case "checkout_shipping_info_submitted":
-      await sendMP(clientId, "add_shipping_info", base);
-      break;
-
-    case "payment_info_submitted":
-      await sendMP(clientId, "add_payment_info", base);
-      break;
-
-    case "checkout_completed":
-      await sendMP(clientId, "purchase", {
-        ...base,
-        transaction_id: digits(checkout.order && checkout.order.id)
-      });
-      break;
-  }
-}
-
-module.exports = { forwardCheckoutToGA4 };

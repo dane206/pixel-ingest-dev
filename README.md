@@ -37,7 +37,7 @@ It enforces the SSOT contract by **not** interpreting or mutating data.
 
 ## Endpoint Contract
 
-* **POST** `/track`
+* **POST** `v1//track`
 * **Response:** `204 No Content` (always)
 
 ### Request Shapes
@@ -163,7 +163,7 @@ Set at deploy-time and must not be inferred from code defaults:
 ### Test Insert
 
 ```bash
-curl -X POST https://pixel-ingest-dev-600339193870.us-central1.run.app/track \
+curl -X POST https://pixel-ingest-dev-600339193870.us-central1.run.app/v1/track \
   -H "content-type: application/json" \
   -d '{"event_name":"ping","event_id":"verify-001","data_source":"manual"}'
 ```

@@ -1,5 +1,6 @@
 import express from "express";
 import { BigQuery } from "@google-cloud/bigquery";
+import { forwardCheckoutToGA4 } from "./ga4Forwarder.js";
 
 const app = express();
 app.disable("x-powered-by");
@@ -64,129 +65,6 @@ if (!DATASET || !TABLE) {
 }
 
 /* =========================
-   GA4 Measurement Protocol
-========================= */
-
-const GA4_MEASUREMENT_ID = process.env.GA4_MEASUREMENT_ID || null;
-const GA4_API_SECRET = process.env.GA4_API_SECRET || null;
-const GA4_MP_MODE = process.env.GA4_MP_MODE || "collect"; // "collect" | "debug"
-
-async function getFetch() {
-  if (typeof fetch === "function") return fetch;
-  const mod = await import("node-fetch");
-  return mod.default;
-}
-
-function mapTerraToGa4EventName(name) {
-  switch (name) {
-    case "checkout_started": return "begin_checkout";
-    case "checkout_shipping_info_submitted": return "add_shipping_info";
-    case "payment_info_submitted": return "add_payment_info";
-    case "checkout_completed": return "purchase";
-    default: return null;
-  }
-}
-
-function safeNumber(x) {
-  const n = Number(x);
-  return Number.isFinite(n) ? n : null;
-}
-
-async function forwardToGA4MP(ev) {
-  if (!GA4_MEASUREMENT_ID || !GA4_API_SECRET) return;
-
-  const ga4Name = mapTerraToGa4EventName(ev.event_name);
-  if (!ga4Name) return;
-
-  // ✅ THIS IS THE FIX — read Shopify checkout structure
-  const checkout =
-    ev.raw &&
-    ev.raw.data &&
-    ev.raw.data.checkout
-      ? ev.raw.data.checkout
-      : null;
-
-  if (!checkout) return;
-
-  const lines = checkout.lineItems || [];
-  if (!lines.length) return;
-
-  const items = [];
-
-  for (let i = 0; i < lines.length; i++) {
-    const li = lines[i];
-    if (!li || !li.variant) continue;
-
-    const productId = String(li.variant.product.id).replace(/\D/g, "");
-    const variantId = String(li.variant.id).replace(/\D/g, "");
-
-    items.push({
-      item_id: "shopify_US_" + productId + "_" + variantId,
-      item_name: li.title || "",
-      price: Number(li.variant.price.amount),
-      quantity: li.quantity || 1
-    });
-  }
-
-  const attrs = checkout.attributes || checkout.noteAttributes || {};
-
-  const clientId =
-  	attrs.ga4_client_id ||
-  	(ev.raw && ev.raw.clientId) ||
-  	null;
-
-  if (!clientId) {
-  	console.log("[ga4-mp] missing ga4_client_id — cannot stitch session");
-  	return;
-  }
-
-  const params = {
-  	currency: checkout.currencyCode,
-  	value: Number(checkout.totalPrice.amount),
-  	items,
-  	transaction_id:
-      checkout.order && checkout.order.id
-      	? String(checkout.order.id).replace(/\D/g, "")
-      	: undefined,
-
-  	// ✅ session stitching
-  	session_id: attrs.ga4_session_id ? Number(attrs.ga4_session_id) : undefined,
-  	session_number: attrs.ga4_session_number ? Number(attrs.ga4_session_number) : undefined,
-
-  	engagement_time_msec: 1
-  };
-
-  Object.keys(params).forEach((k) => {
-    if (params[k] === undefined) delete params[k];
-  });
-
-  const mpBody = {
-    client_id: clientId,
-    events: [{ name: ga4Name, params }]
-  };
-
-  const base =
-    GA4_MP_MODE === "debug"
-      ? "https://www.google-analytics.com/debug/mp/collect"
-      : "https://www.google-analytics.com/mp/collect";
-
-  const url =
-    base +
-    "?measurement_id=" + encodeURIComponent(GA4_MEASUREMENT_ID) +
-    "&api_secret=" + encodeURIComponent(GA4_API_SECRET);
-
-  const _fetch = await getFetch();
-  const r = await _fetch(url, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify(mpBody)
-  });
-
-  const text = await r.text();
-  console.log("[ga4-mp]", ga4Name, r.status, text.slice(0, 300));
-}
-
-/* =========================
    Track handler
 ========================= */
 
@@ -220,13 +98,13 @@ async function handleTrack(req, res) {
       }
 
       await bq.dataset(DATASET).table(TABLE).insert(rows, { ignoreUnknownValues: false, skipInvalidRows: false });
-
+      
       // After ledger write, forward to GA4 MP (fire-and-forget)
       for (let i = 0; i < events.length; i++) {
-        const ev = events[i] || {};
-        forwardToGA4MP(ev).catch((e) => {
-          console.log("[ga4-mp] error", String(e && e.message ? e.message : e));
-        });
+      	const ev = events[i] || {};
+      	forwardCheckoutToGA4(ev).catch((e) => {
+      	  console.log("[ga4-mp] error", String(e && e.message ? e.message : e));
+      	});
       }
     }
   } catch (err) {
