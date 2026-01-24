@@ -35,11 +35,24 @@ function buildItems(checkout) {
 
 function ga4Name(shopifyName) {
   switch (shopifyName) {
-    case "checkout_started": return "begin_checkout";
-    case "checkout_shipping_info_submitted": return "add_shipping_info";
-    case "payment_info_submitted": return "add_payment_info";
-    case "checkout_completed": return "purchase";
-    default: return null;
+
+    case "checkout_started":
+      return "begin_checkout";
+
+    // ALL THREE map to the SAME GA4 event
+    case "checkout_contact_info_submitted":
+    case "checkout_address_info_submitted":
+    case "checkout_shipping_info_submitted":
+      return "add_shipping_info";
+
+    case "payment_info_submitted":
+      return "add_payment_info";
+
+    case "checkout_completed":
+      return "purchase";
+
+    default:
+      return null;
   }
 }
 
