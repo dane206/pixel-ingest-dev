@@ -1,5 +1,5 @@
-For the GA4 / Shopify / Measurement Protocol parts of your system, every line should map directly to vendor documentation. No invention, no interpretation.
-
+For the GA4 / Shopify / Measurement Protocol parts of your system, every line should map directly to vendor documentation. 
+No invention, no interpretation.
 These are the exact sources your Node (Cloud Run) file must follow.
 
 ---

@@ -58,10 +58,20 @@ export async function forwardCheckoutToGA4(ev) {
   );
 
   const clientId =
-    attrs.terra_ga_cid ||  // from your bridge
-    ev?.clientId;
-
-  if (!clientId) return;
+	attrs.ga4_client_id ||
+	attrs.terra_ga_cid ||
+	ev.raw?.clientId ||
+	null;
+	
+  const sessionId =
+	attrs.ga4_session_id ||
+	attrs.terra_ga_sid ||
+	null;
+	
+  const sessionNumber =
+	attrs.ga4_session_number ||
+	attrs.terra_ga_sn ||
+	null;
 
   const items = buildItems(checkout);
   if (!items.length) return;
@@ -71,9 +81,10 @@ export async function forwardCheckoutToGA4(ev) {
     value: Number(checkout.totalPrice?.amount),
     items,
     engagement_time_msec: 1,
-    session_id: Number(attrs.terra_ga_sid),
-    session_number: Number(attrs.terra_ga_sn),
   };
+
+  if (sessionId) params.session_id = Number(sessionId);
+  if (sessionNumber) params.session_number = Number(sessionNumber);
 
   if (name === "purchase") {
     params.transaction_id = digits(checkout.order?.id);
