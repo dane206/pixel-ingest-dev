@@ -1,3 +1,5 @@
+import fetch from "node-fetch";
+
 const MID = process.env.GA4_MEASUREMENT_ID;
 const SECRET = process.env.GA4_API_SECRET;
 
@@ -39,9 +41,6 @@ function ga4Name(shopifyName) {
     case "checkout_started":
       return "begin_checkout";
 
-    // ALL THREE map to the SAME GA4 event
-    case "checkout_contact_info_submitted":
-    case "checkout_address_info_submitted":
     case "checkout_shipping_info_submitted":
       return "add_shipping_info";
 
@@ -73,8 +72,9 @@ export async function forwardCheckoutToGA4(ev) {
   const clientId =
 	attrs.ga4_client_id ||
 	attrs.terra_ga_cid ||
-	ev.raw?.clientId ||
+	raw?.clientId ||
 	null;
+  if (!clientId) return;
 	
   const sessionId =
 	attrs.ga4_session_id ||
@@ -86,32 +86,70 @@ export async function forwardCheckoutToGA4(ev) {
 	attrs.terra_ga_sn ||
 	null;
 
-  const items = buildItems(checkout);
-  if (!items.length) return;
+const items = buildItems(checkout);
+if (!items.length) return;
 
-  const params = {
-    currency: checkout.currencyCode,
-    value: Number(checkout.totalPrice?.amount),
-    items,
-    engagement_time_msec: 1,
-  };
+let params;
 
-  if (sessionId) params.session_id = Number(sessionId);
-  if (sessionNumber) params.session_number = Number(sessionNumber);
+switch (name) {
 
-  if (name === "purchase") {
-    params.transaction_id = digits(checkout.order?.id);
+  case "begin_checkout":
+    params = {
+      currency: checkout.currencyCode,
+      value: Number(checkout.subtotalPrice?.amount),
+      items
+    };
+    break;
+
+  case "add_shipping_info":
+    params = {
+      currency: checkout.currencyCode,
+      value: Number(checkout.subtotalPrice?.amount),
+      items,
+      shipping_tier:
+        checkout.delivery?.selectedDeliveryOptions?.[0]?.title || undefined
+    };
+    break;
+
+  case "add_payment_info":
+    params = {
+      currency: checkout.currencyCode,
+      value: Number(checkout.subtotalPrice?.amount),
+      items,
+      payment_type:
+        checkout.transactions?.[0]?.paymentMethod?.type || undefined
+    };
+    break;
+
+  case "purchase":
+    params = {
+      currency: checkout.currencyCode,
+      value: Number(checkout.totalPrice?.amount),
+      items,
+      transaction_id: digits(checkout.order?.id)
+    };
+    break;
+
+  default:
+    return;
+}
+
+params.engagement_time_msec = 1;
+
+if (sessionId) params.session_id = Number(sessionId);
+if (sessionNumber) params.session_number = Number(sessionNumber);
+
+if (!clientId) return;
+
+await fetch(
+  `https://www.google-analytics.com/mp/collect?measurement_id=${MID}&api_secret=${SECRET}`,
+  {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      client_id: clientId,
+      events: [{ name, params }]
+    })
   }
-
-  await fetch(
-    `https://www.google-analytics.com/mp/collect?measurement_id=${MID}&api_secret=${SECRET}`,
-    {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        client_id: clientId,
-        events: [{ name, params }]
-      })
-    }
-  );
+);
 }
