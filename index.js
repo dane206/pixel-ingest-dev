@@ -97,7 +97,7 @@ async function handleTrack(req, res) {
         });
       }
 
-      await bq.dataset(DATASET).table(TABLE).insert(rows, { ignoreUnknownValues: false, skipInvalidRows: false });
+      await bq.dataset(DATASET).table(TABLE).insert(rows, { ignoreUnknownValues: true, skipInvalidRows: true });
       
       // After ledger write, forward to GA4 MP (fire-and-forget)
       for (let i = 0; i < events.length; i++) {
