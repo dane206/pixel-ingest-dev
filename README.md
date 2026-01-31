@@ -1,6 +1,8 @@
 # Raw Event Ingest — SSOT
 
-**Last updated:** 2026-01-12
+**Last updated:** 2026-01-30
+
+DEV VERIFIED: GA4 + BigQuery raw schema validated on 2026-01-20
 
 This document is the **single source of truth** for the raw event ingestion pipeline. It replaces:
 
