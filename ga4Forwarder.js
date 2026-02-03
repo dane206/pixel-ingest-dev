@@ -18,6 +18,7 @@ function attrsToObject(arr) {
 
 function buildItems(checkout) {
   const items = [];
+
   for (const li of checkout.lineItems || []) {
     if (!li?.variant) continue;
 
@@ -25,13 +26,43 @@ function buildItems(checkout) {
     const variantId = digits(li.variant.id);
     if (!productId || !variantId) continue;
 
+    const price = Number(li.variant.price?.amount);
+
     items.push({
       item_id: `shopify_US_${productId}_${variantId}`,
+      item_group_id: `shopify_US_${productId}`,
+      variant_id: String(variantId),
+      sku: li.variant.sku || "",
+
       item_name: li.title || "",
-      price: Number(li.variant.price?.amount),
-      quantity: li.quantity || 1
+      affiliation: "shopify_web_store",
+      currency: checkout.currencyCode,
+      price: price,
+      quantity: li.quantity || 1,
+
+      coupon: "",
+      discount: 0,
+      index: 1,
+
+      item_brand: li.variant.product?.vendor || "",
+      item_category: li.variant.product?.type || "",
+      item_category2: "",
+      item_category3: "",
+      item_category4: "",
+      item_category5: "",
+
+      item_list_id: "",
+      item_list_name: "",
+      item_variant: li.variant.title || "",
+
+      location_id: "",
+      creative_name: "",
+      creative_slot: "",
+      promotion_id: "",
+      promotion_name: ""
     });
   }
+
   return items;
 }
 
@@ -126,7 +157,7 @@ switch (name) {
       currency: checkout.currencyCode,
       value: Number(checkout.totalPrice?.amount),
       items,
-      transaction_id: digits(checkout.order?.id)
+      transaction_id: checkout.token
     };
     break;
 
@@ -136,7 +167,7 @@ switch (name) {
 
 params.engagement_time_msec = 1;
 
-if (sessionId) params.session_id = Number(sessionId);
+if (sessionId) params.session_id = String(sessionId);
 if (sessionNumber) params.session_number = Number(sessionNumber);
 
 if (!clientId) return;
@@ -148,7 +179,14 @@ await fetch(
     headers: { "content-type": "application/json" },
     body: JSON.stringify({
       client_id: clientId,
-      events: [{ name, params }]
+      user_id: attrs.th_vid || undefined,
+      events: [{
+        name,
+        params: {
+          event_id: ev.event_id,
+          ...params
+        }
+      }]
     })
   }
 );
