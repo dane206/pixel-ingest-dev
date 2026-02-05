@@ -80,15 +80,11 @@ function mapName(n) {
   }
 }
 
-export async function forwardCheckoutToGA4(ev) {
+export async function forwardCheckoutToGA4(ev, checkout) {
   if (!MID || !SECRET) return;
 
   const name = mapName(ev.event_name);
   if (!name) return;
-
-  const raw = typeof ev.raw === "string" ? JSON.parse(ev.raw) : ev.raw;
-  const checkout = raw?.data?.checkout;
-  if (!checkout) return;
 
   const attrs = attrsToObject(checkout.attributes);
 
