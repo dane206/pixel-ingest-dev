@@ -42,23 +42,21 @@ export default async function trackRoute(req, res) {
         });
       }
 
-      // Write raw ledger
+      // 1. Write raw ledger - FIRST
       await insertBQ(rows);
 
-      // Forward to GA4
+      // 2. Forward ONLY checkout events to GA4 - SECOND
       for (var j = 0; j < events.length; j++) {
         var ev2 = events[j] || {};
 
-        var raw =
-          typeof ev2.raw === "string"
-            ? JSON.parse(ev2.raw)
-            : ev2.raw;
+        var checkout =
+  		  ev2 &&
+  		  ev2.data &&
+  		  ev2.data.checkout;
 
-        var checkout = raw && raw.data && raw.data.checkout;
-
-        if (checkout) {
-          await forwardCheckoutToGA4(ev2, checkout);
-        }
+	  	if (checkout) {
+	  	  await forwardCheckoutToGA4(ev2, checkout);
+	  	}
       }
     }
   } catch (err) {
