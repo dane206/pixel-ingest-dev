@@ -16,16 +16,17 @@ function attrsToObject(arr) {
   return o;
 }
 
-/* =========================
-   FULL GA4 ITEM SCHEMA
-========================= */
+/* FULL GA4 ITEM SCHEMA */
 function buildItems(checkout) {
   const items = [];
 
   for (const li of checkout.lineItems || []) {
-    if (!li?.variant) continue;
+    if (!li || !li.variant) continue;
 
-    const productId = digits(li.variant.product?.id);
+	var productId = digits(
+  	  li.variant.product && li.variant.product.id
+	);
+	
     const variantId = digits(li.variant.id);
     if (!productId || !variantId) continue;
 
@@ -38,15 +39,15 @@ function buildItems(checkout) {
       item_name: li.title || "",
       affiliation: "shopify_web_store",
       currency: checkout.currencyCode,
-      price: Number(li.variant.price?.amount),
+      price: Number(li.variant.price && li.variant.price.amount),
       quantity: li.quantity || 1,
 
       coupon: "",
       discount: 0,
       index: 1,
 
-      item_brand: li.variant.product?.vendor || "",
-      item_category: li.variant.product?.type || "",
+      item_brand: (li.variant.product && li.variant.product.vendor) || "",
+      item_category: (li.variant.product && li.variant.product.type) || "",
       item_category2: "",
       item_category3: "",
       item_category4: "",
@@ -67,9 +68,7 @@ function buildItems(checkout) {
   return items;
 }
 
-/* =========================
-   Shopify → GA4 mapping
-========================= */
+/* Shopify → GA4 mapping */
 function mapName(n) {
   switch (n) {
     case "checkout_started": return "begin_checkout";
@@ -88,18 +87,14 @@ export async function forwardCheckoutToGA4(ev, checkout) {
 
   const attrs = attrsToObject(checkout.attributes);
 
-  /* =========================
-     REQUIRED IDENTITY
-  ========================= */
-
+  /* REQUIRED IDENTITY */
   const clientId =
-    attrs.ga4_client_id ||
-    attrs.terra_ga_cid ||
-    raw.clientId;
+  	attrs.ga4_client_id ||
+  	attrs.terra_ga_cid;
 
   if (!clientId) {
-    console.log("[ga4-mp] ❌ NO CLIENT ID");
-    return;
+  	console.log("[ga4-mp] ❌ NO CLIENT ID");
+  	return;
   }
 
   const sessionId =
@@ -116,16 +111,15 @@ export async function forwardCheckoutToGA4(ev, checkout) {
     return;
   }
 
-  /* =========================
-     GA4 EVENT PARAMS
-  ========================= */
-
+  /* GA4 EVENT PARAMS */
   const params = {
     currency: checkout.currencyCode,
-    value:
-      name === "purchase"
-        ? Number(checkout.totalPrice?.amount)
-        : Number(checkout.subtotalPrice?.amount),
+    value: Number(
+      (name === "purchase"
+      ? checkout.totalPrice && checkout.totalPrice.amount
+      : checkout.subtotalPrice && checkout.subtotalPrice.amount
+	  ) || 0
+	),
 
     items,
     engagement_time_msec: 1,
@@ -133,18 +127,14 @@ export async function forwardCheckoutToGA4(ev, checkout) {
     session_id: sessionId ? Number(sessionId) : undefined,
     session_number: sessionNumber ? Number(sessionNumber) : undefined,
 
-    transaction_id:
-      name === "purchase"
-        ? digits(checkout.order?.id)
-        : undefined,
+    transaction_id: name === "purchase"
+  	  ? digits(checkout.order && checkout.order.id)
+  	  : undefined,
 
     event_id: ev.event_id
   };
 
-  /* =========================
-     DEBUG PROOF
-  ========================= */
-
+  /* DEBUG PROOF */
   const payload = {
     client_id: clientId,
     user_id: attrs.th_vid || undefined,
