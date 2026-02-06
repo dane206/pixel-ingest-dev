@@ -1,36 +1,6 @@
 import insertBQ from "../lib/bq.js";
 import { forwardCheckoutToGA4 } from "../integrations/ga4.js";
 
-function toPureJSON(obj) {
-  if (obj === null || obj === undefined) return null;
-
-  if (Array.isArray(obj)) {
-    return obj.map(toPureJSON);
-  }
-
-  if (typeof obj === "object") {
-    const clean = {};
-    for (const k in obj) {
-      const v = obj[k];
-
-      if (typeof v === "bigint") {
-        clean[k] = Number(v);
-      } else if (
-        typeof v === "function" ||
-        typeof v === "symbol" ||
-        v === undefined
-      ) {
-        continue;
-      } else {
-        clean[k] = toPureJSON(v);
-      }
-    }
-    return clean;
-  }
-
-  return obj;
-}
-
 export default async function trackRoute(req, res) {
   console.log("=== TRACK ROUTE ENTERED ===");
 
@@ -57,7 +27,7 @@ export default async function trackRoute(req, res) {
         event_name: ev.event_name || null,
         event_id: ev.event_id ? String(ev.event_id) : null,  // ← THIS
         event_time: ev.event_time || null,      // ✅ pass through
-        raw: toPureJSON(ev)
+        raw: JSON.stringify(ev)
       });
     }
 
