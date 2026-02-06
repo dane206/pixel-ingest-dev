@@ -152,7 +152,8 @@ export async function forwardCheckoutToGA4(ev) {
   	  ? digits(checkout.order && checkout.order.id)
   	  : undefined,
 
-    event_id: ev.event_id
+    event_id: ev.event_id,
+    debug_mode: 1
   };
 
   /* DEBUG PROOF */
@@ -164,9 +165,11 @@ export async function forwardCheckoutToGA4(ev) {
   };
 
   console.log("[ga4-mp] SENDING\n", JSON.stringify(payload, null, 2));
+  
+  console.log("[ga4-mp] MID:", MID, "SECRET?", Boolean(SECRET), "name:", name);
 
   const r = await fetch(
-    `https://www.google-analytics.com/debug/mp/collect?measurement_id=${MID}&api_secret=${SECRET}`,
+    `https://www.google-analytics.com/mp/collect?measurement_id=${MID}&api_secret=${SECRET}`,
     {
       method: "POST",
       headers: { "content-type": "application/json" },
