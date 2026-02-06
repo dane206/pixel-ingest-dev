@@ -85,12 +85,17 @@ export async function forwardCheckoutToGA4(ev, checkout) {
   const name = mapName(ev.event_name);
   if (!name) return;
 
-  const attrs = attrsToObject(checkout.attributes);
+  const raw = ev.raw || {};
+  const attrs = attrsToObject(checkout.attributes || []);
+  const identity = raw.identity || {};
 
   /* REQUIRED IDENTITY */
   const clientId =
   	attrs.ga4_client_id ||
-  	attrs.terra_ga_cid;
+  	attrs.terra_ga_cid ||
+  	identity.ga4_client_id ||
+  	identity.terra_ga_cid ||
+  	identity.ga_client_id;
 
   if (!clientId) {
   	console.log("[ga4-mp] ❌ NO CLIENT ID");
@@ -98,12 +103,16 @@ export async function forwardCheckoutToGA4(ev, checkout) {
   }
 
   const sessionId =
-    attrs.ga4_session_id ||
-    attrs.terra_ga_sid;
+  	attrs.ga4_session_id ||
+  	attrs.terra_ga_sid ||
+  	identity.ga4_session_id ||
+  	identity.terra_ga_sid;
 
   const sessionNumber =
-    attrs.ga4_session_number ||
-    attrs.terra_ga_sn;
+  	attrs.ga4_session_number ||
+  	attrs.terra_ga_sn ||
+  	identity.ga4_session_number ||
+  	identity.terra_ga_sn;
 
   const items = buildItems(checkout);
   if (!items.length) {
