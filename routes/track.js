@@ -36,15 +36,18 @@ export default async function trackRoute(req, res) {
     console.log("BQ INSERT SUCCESS");
 
     for (let i = 0; i < events.length; i++) {
-      const ev = events[i];
-      const checkout = ev?.data?.checkout;
-
-      if (checkout) {
-        console.log("FORWARDING TO GA4");
-        await forwardCheckoutToGA4(ev, checkout);
-        console.log("GA4 FORWARD SUCCESS");
-      }
-    }
+	  const ev = events[i];
+	
+	  const checkout = ev?.raw?.data?.checkout;
+	
+	  if (!checkout) {
+		console.log("NO CHECKOUT FOUND IN RAW");
+		continue;
+	  }
+	
+	  console.log("CHECKOUT FOUND → FORWARDING TO GA4");
+	  await forwardCheckoutToGA4(ev, checkout);
+	}
 
     res.status(200).end();
   } catch (err) {
