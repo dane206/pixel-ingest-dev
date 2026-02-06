@@ -86,15 +86,12 @@ export async function forwardCheckoutToGA4(ev, checkout) {
   if (!name) return;
 
   const raw = ev.raw || {};
-  const attrs = attrsToObject(checkout.attributes || []);
   const identity = raw.identity || {};
+  const attrs = attrsToObject(checkout.attributes || []);
 
-  /* REQUIRED IDENTITY */
   const clientId =
   	attrs.ga4_client_id ||
   	attrs.terra_ga_cid ||
-  	identity.ga4_client_id ||
-  	identity.terra_ga_cid ||
   	identity.ga_client_id;
 
   if (!clientId) {
