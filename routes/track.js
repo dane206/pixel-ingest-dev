@@ -78,7 +78,10 @@ export default async function trackRoute(req, res) {
 
     res.status(200).end();
   } catch (err) {
-    console.error("🚨 BQ OR GA4 FAILURE:", err);
+    console.error(
+  	  "🚨 BQ INSERT FULL ERROR:",
+  	  JSON.stringify(err, Object.getOwnPropertyNames(err), 2)
+	);
     res.status(500).json({ error: err.message });
   }
 }
