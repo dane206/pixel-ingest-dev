@@ -1,67 +1,54 @@
 import insertBQ from "../lib/bq.js";
 import { forwardCheckoutToGA4 } from "../integrations/ga4.js";
 
-/* Track handler */
 export default async function trackRoute(req, res) {
-  var body = req.body;
-  var events;
-
-  if (Array.isArray(body && body.events)) {
-    events = body.events;
-  } else if (Array.isArray(body)) {
-    events = body;
-  } else if (body) {
-    events = [body];
-  } else {
-    events = [];
-  }
-
-  var receivedAtIso = new Date().toISOString();
+  console.log("=== TRACK ROUTE ENTERED ===");
 
   try {
-    if (events.length) {
-      var rows = [];
+    const body = req.body || {};
+    console.log("BODY:", Object.keys(body));
 
-      for (var i = 0; i < events.length; i++) {
-        var ev = events[i] || {};
+    const events = Array.isArray(body?.events)
+      ? body.events
+      : Array.isArray(body)
+        ? body
+        : [body];
 
-        var eventTime = null;
-        if (ev.event_time || ev.timestamp) {
-          eventTime = new Date(ev.event_time || ev.timestamp);
-        }
+    console.log("EVENT COUNT:", events.length);
 
-        rows.push({
-          received_at: new Date(receivedAtIso),
-          data_source: ev.data_source || ev.source || "unknown",
-          event_name: ev.event_name || ev.event || null,
-          event_id: ev.event_id || null,
-          event_time: eventTime,
-          raw: JSON.parse(JSON.stringify(ev, function (_k, v) {
-            return v === undefined ? null : v;
-          }))
-        });
-      }
+    const rows = [];
 
-      // 1. Write raw ledger - FIRST
-      await insertBQ(rows);
+    for (let i = 0; i < events.length; i++) {
+      const ev = events[i] || {};
 
-      // 2. Forward ONLY checkout events to GA4 - SECOND
-      for (var j = 0; j < events.length; j++) {
-        var ev2 = events[j] || {};
+      rows.push({
+        received_at: new Date(),
+        data_source: ev.data_source || "unknown",
+        event_name: ev.event_name || null,
+        event_id: ev.event_id || null,
+        event_time: ev.event_time ? new Date(ev.event_time) : null,
+        raw: ev
+      });
+    }
 
-        var checkout =
-  		  ev2 &&
-  		  ev2.data &&
-  		  ev2.data.checkout;
+    console.log("ABOUT TO INSERT BQ:", rows.length);
+    await insertBQ(rows);
+    console.log("BQ INSERT SUCCESS");
 
-	  	if (checkout) {
-	  	  await forwardCheckoutToGA4(ev2, checkout);
-	  	}
+    for (let i = 0; i < events.length; i++) {
+      const ev = events[i];
+      const checkout = ev?.data?.checkout;
+
+      if (checkout) {
+        console.log("FORWARDING TO GA4");
+        await forwardCheckoutToGA4(ev, checkout);
+        console.log("GA4 FORWARD SUCCESS");
       }
     }
-  } catch (err) {
-    console.error("[trackRoute] error", err);
-  }
 
-  res.status(204).end();
+    res.status(200).end();
+  } catch (err) {
+    console.error("🚨 BQ OR GA4 FAILURE:", err);
+    res.status(500).json({ error: err.message });
+  }
 }
