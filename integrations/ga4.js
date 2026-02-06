@@ -79,20 +79,35 @@ function mapName(n) {
   }
 }
 
-export async function forwardCheckoutToGA4(ev, checkout) {
+export async function forwardCheckoutToGA4(ev) {
   if (!MID || !SECRET) return;
-
+  
   const name = mapName(ev.event_name);
   if (!name) return;
 
   const raw = ev.raw || {};
-  const identity = raw.identity || {};
+
+  // 🔴 THE REAL SOURCE OF TRUTH
+  const checkout =
+    raw.data &&
+    raw.data.checkout;
+
+  if (!checkout) {
+    console.log("[ga4-mp] ❌ NO CHECKOUT IN RAW");
+    return;
+  }
+
   const attrs = attrsToObject(checkout.attributes || []);
 
+  const identity =
+  raw.data &&
+  raw.data.identity
+    ? raw.data.identity
+    : {};
+
   const clientId =
-  	attrs.ga4_client_id ||
-  	attrs.terra_ga_cid ||
-  	identity.ga_client_id;
+    attrs.ga4_client_id ||
+    attrs.terra_ga_cid;
 
   if (!clientId) {
   	console.log("[ga4-mp] ❌ NO CLIENT ID");
