@@ -35,7 +35,7 @@ app.use(function (req, res, next) {
 /* Body parsing */
 app.use(
   express.json({
-    limit: "256kb",
+    limit: "5mb",
     type: ["application/json", "text/plain"]
   })
 );
