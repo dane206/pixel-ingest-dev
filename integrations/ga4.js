@@ -99,15 +99,7 @@ export async function forwardCheckoutToGA4(ev) {
 
   const attrs = attrsToObject(checkout.attributes || []);
 
-  const identity =
-  raw.data &&
-  raw.data.identity
-    ? raw.data.identity
-    : {};
-
-  const clientId =
-    attrs.ga4_client_id ||
-    attrs.terra_ga_cid;
+  const clientId = ev.ga_client_id;
 
   if (!clientId) {
   	console.log("[ga4-mp] ❌ NO CLIENT ID");
@@ -117,14 +109,12 @@ export async function forwardCheckoutToGA4(ev) {
   const sessionId =
   	attrs.ga4_session_id ||
   	attrs.terra_ga_sid ||
-  	identity.ga4_session_id ||
-  	identity.terra_ga_sid;
+  	undefined;
 
   const sessionNumber =
   	attrs.ga4_session_number ||
   	attrs.terra_ga_sn ||
-  	identity.ga4_session_number ||
-  	identity.terra_ga_sn;
+  	undefined;
 
   const items = buildItems(checkout);
   if (!items.length) {
@@ -148,9 +138,7 @@ export async function forwardCheckoutToGA4(ev) {
     session_id: sessionId ? Number(sessionId) : undefined,
     session_number: sessionNumber ? Number(sessionNumber) : undefined,
 
-    transaction_id: name === "purchase"
-  	  ? digits(checkout.order && checkout.order.id)
-  	  : undefined,
+    transaction_id: ev.transaction_id || undefined,
 
     event_id: ev.event_id,
     debug_mode: 1
@@ -159,7 +147,7 @@ export async function forwardCheckoutToGA4(ev) {
   /* DEBUG PROOF */
   const payload = {
     client_id: clientId,
-    user_id: attrs.th_vid || undefined,
+    user_id: ev.user_id || undefined,
     timestamp_micros: Date.now() * 1000,
     events: [{ name, params }]
   };
