@@ -27,7 +27,7 @@ export default async function trackRoute(req, res) {
         event_name: ev.event_name || null,
         event_id: ev.event_id ? String(ev.event_id) : null,  // ← THIS
         event_time: ev.event_time || null,      // ✅ pass through
-        raw: JSON.stringify(ev)
+        raw: ev
       });
     }
 
