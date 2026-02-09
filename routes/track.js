@@ -3,7 +3,7 @@ import { forwardCheckoutToGA4 } from "../integrations/ga4.js";
 
 export default async function trackRoute(req, res) {
   try {
-    const body = req.body || {};
+    const body = JSON.parse(JSON.stringify(req.body || {}));  // ← THE REAL FIX
 
     const events = Array.isArray(body?.events)
       ? body.events
