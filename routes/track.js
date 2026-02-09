@@ -22,13 +22,15 @@ export default async function trackRoute(req, res) {
       const ev = events[i] || {};
 
       rows.push({
-        received_at: new Date().toISOString(),   // ✅ ISO only
-        data_source: ev.data_source || "unknown",
-        event_name: ev.event_name || null,
-        event_id: ev.event_id ? String(ev.event_id) : null,  // ← THIS
-        event_time: ev.event_time || null,      // ✅ pass through
-        raw: ev
-      });
+		received_at: new Date().toISOString(),
+		data_source: ev.data_source || "unknown",
+		event_name: ev.event_name || null,
+		event_id: ev.event_id ? String(ev.event_id) : null,
+		event_time: ev.event_time || null,
+		
+		// 👇 THIS IS THE CRITICAL FIX
+		raw: ev.raw || ev
+	  });
     }
 
     console.log("ABOUT TO INSERT BQ:", rows.length);
