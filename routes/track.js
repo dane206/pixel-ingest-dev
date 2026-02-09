@@ -6,7 +6,6 @@ export default async function trackRoute(req, res) {
 
   try {
     const body = req.body || {};
-    console.log("BODY:", Object.keys(body));
 
     const events = Array.isArray(body?.events)
       ? body.events
@@ -14,49 +13,44 @@ export default async function trackRoute(req, res) {
         ? body
         : [body];
 
-    console.log("EVENT COUNT:", events.length);
-
     const rows = [];
 
+    // ✅ ALWAYS store EXACT event as received
     for (let i = 0; i < events.length; i++) {
       const ev = events[i] || {};
 
       rows.push({
-		received_at: new Date().toISOString(),
-		data_source: ev.data_source || "unknown",
-		event_name: ev.event_name || null,
-		event_id: ev.event_id ? String(ev.event_id) : null,
-		event_time: ev.event_time || null,
-		
-		// 👇 THIS IS THE CRITICAL FIX
-		raw: ev.raw || ev
-	  });
+        received_at: new Date().toISOString(),
+        data_source: ev.data_source || "unknown",
+        event_name: ev.event_name || null,
+        event_id: ev.event_id ? String(ev.event_id) : null,
+        event_time: ev.event_time || null,
+        raw: ev
+      });
     }
 
-    console.log("ABOUT TO INSERT BQ:", rows.length);
     await insertBQ(rows);
     console.log("BQ INSERT SUCCESS");
 
+    // ✅ GA4 forwarding is NOT part of storage
     for (let i = 0; i < events.length; i++) {
-	  const ev = events[i];
-	
-	  const checkout = ev?.raw?.data?.checkout;
-	
-	  if (!checkout) {
-		console.log("NO CHECKOUT FOUND IN RAW");
-		continue;
-	  }
-	
-	  console.log("CHECKOUT FOUND → FORWARDING TO GA4");
-	  await forwardCheckoutToGA4(ev, checkout);
-	}
+      const ev = events[i];
+
+      if (ev.data_source !== "shopify_checkout_pixel") continue;
+
+      try {
+        await forwardCheckoutToGA4(ev);
+      } catch (e) {
+        console.error("GA4 forward failed:", e.message);
+      }
+    }
 
     res.status(200).end();
   } catch (err) {
     console.error(
-  	  "🚨 BQ INSERT FULL ERROR:",
-  	  JSON.stringify(err, Object.getOwnPropertyNames(err), 2)
-	);
+      "🚨 TRACK ROUTE ERROR:",
+      JSON.stringify(err, Object.getOwnPropertyNames(err), 2)
+    );
     res.status(500).json({ error: err.message });
   }
 }
