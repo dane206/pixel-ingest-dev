@@ -16,6 +16,8 @@ export default async function trackRoute(req, res) {
     // ✅ ALWAYS store EXACT event object (never ev.raw)
     for (let i = 0; i < events.length; i++) {
       const ev = events[i] || {};
+      
+      delete ev["gtm.uniqueEventId"];  // ← ADD THIS LINE RIGHT HERE
 
       rows.push({
         received_at: new Date().toISOString(),
