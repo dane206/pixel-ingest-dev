@@ -99,11 +99,15 @@ export async function forwardCheckoutToGA4(ev) {
 
   const attrs = attrsToObject(checkout.attributes || []);
 
-  const clientId = ev.ga_client_id;
+  const clientId =
+  	attrs.ga4_client_id ||
+  	attrs.terra_ga_cid ||
+  	attrs._ga ||
+  	undefined;
 
   if (!clientId) {
-  	console.log("[ga4-mp] ❌ NO CLIENT ID");
-  	return;
+    console.log("[ga4-mp] ❌ NO CLIENT ID IN ATTRS");
+    return;
   }
 
   const sessionId =
@@ -138,7 +142,7 @@ export async function forwardCheckoutToGA4(ev) {
     session_id: sessionId ? Number(sessionId) : undefined,
     session_number: sessionNumber ? Number(sessionNumber) : undefined,
 
-    transaction_id: ev.transaction_id || undefined,
+    transaction_id: (checkout.order && checkout.order.id) ? String(checkout.order.id) : String(checkout.token),
 
     event_id: ev.event_id,
     debug_mode: 1
