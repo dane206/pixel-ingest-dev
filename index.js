@@ -5,7 +5,7 @@ const app = express();
 app.disable("x-powered-by");
 
 app.use(function (req, _res, next) {
-  console.log("[pixel-ingest-dev]", req.method, req.path);
+  console.log("[pixel-ingest]", req.method, req.path);
   next();
 });
 
@@ -53,5 +53,5 @@ app.get("/health", function (_req, res) {
 
 const PORT = Number(process.env.PORT || 8080);
 app.listen(PORT, function () {
-  console.log("[pixel-ingest-dev] listening", { port: PORT });
+  console.log("[pixel-ingest] listening", { port: PORT });
 });
