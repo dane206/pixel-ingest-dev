@@ -3,7 +3,7 @@ import { forwardCheckoutToGA4 } from "../integrations/ga4.js";
 
 export default async function trackRoute(req, res) {
   try {
-    const body = JSON.parse(JSON.stringify(req.body || {}));  // ← THE REAL FIX
+    const body = req.body || {};
 
     const events = Array.isArray(body?.events)
       ? body.events
@@ -13,28 +13,36 @@ export default async function trackRoute(req, res) {
 
     const rows = [];
 
-    // ✅ ALWAYS store EXACT event object (never ev.raw)
-	for (let i = 0; i < events.length; i++) {
-	  const ev = events[i] || {};
-	
-	  // 🔥 THIS is the real fix
-	  const clean = JSON.parse(JSON.stringify(ev));
-	
-	  delete clean["gtm.uniqueEventId"];
-	
-	  rows.push({
-		received_at: new Date().toISOString(),
-		data_source: clean.data_source || "unknown",
-		event_name: clean.event_name || null,
-		event_id: clean.event_id ? String(clean.event_id) : null,
-		event_time: clean.event_time || null,
-		raw: clean
-	  });
-	}
+    for (let i = 0; i < events.length; i++) {
+      const ev = events[i] || {};
+
+      /*
+        CRITICAL:
+        ev.raw is already the Shopify event object.
+        DO NOT parse.
+        DO NOT stringify.
+      */
+
+      const rawObject = ev.raw || {};
+
+      // Optional: remove GTM noise safely
+      if (rawObject && rawObject["gtm.uniqueEventId"]) {
+        delete rawObject["gtm.uniqueEventId"];
+      }
+
+	rows.push({
+	  received_at: new Date(),
+	  data_source: ev.data_source || "unknown",
+	  event_name: ev.event_name || null,
+	  event_id: ev.event_id ? String(ev.event_id) : null,
+	  event_time: ev.event_time ? new Date(ev.event_time) : null,
+	  raw: rawObject
+	});
+    }
 
     await insertBQ(rows);
 
-    // ✅ Only checkout pixel goes to GA4
+    // Only forward checkout pixel to GA4
     for (let i = 0; i < events.length; i++) {
       const ev = events[i];
       if (ev.data_source !== "shopify_checkout_pixel") continue;

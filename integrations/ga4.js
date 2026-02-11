@@ -3,6 +3,8 @@ import fetch from "node-fetch";
 const MID = process.env.GA4_MEASUREMENT_ID;
 const SECRET = process.env.GA4_API_SECRET;
 
+/* ================== UTILS ================== */
+
 function digits(x) {
   return String(x || "").replace(/\D/g, "");
 }
@@ -16,17 +18,18 @@ function attrsToObject(arr) {
   return o;
 }
 
-/* FULL GA4 ITEM SCHEMA */
+/* ================== FULL GA4 ITEM SCHEMA ================== */
+
 function buildItems(checkout) {
   const items = [];
 
   for (const li of checkout.lineItems || []) {
     if (!li || !li.variant) continue;
 
-	var productId = digits(
-  	  li.variant.product && li.variant.product.id
-	);
-	
+    const productId = digits(
+      li.variant.product && li.variant.product.id
+    );
+
     const variantId = digits(li.variant.id);
     if (!productId || !variantId) continue;
 
@@ -46,8 +49,10 @@ function buildItems(checkout) {
       discount: 0,
       index: 1,
 
-      item_brand: (li.variant.product && li.variant.product.vendor) || "",
-      item_category: (li.variant.product && li.variant.product.type) || "",
+      item_brand:
+        (li.variant.product && li.variant.product.vendor) || "",
+      item_category:
+        (li.variant.product && li.variant.product.type) || "",
       item_category2: "",
       item_category3: "",
       item_category4: "",
@@ -68,7 +73,8 @@ function buildItems(checkout) {
   return items;
 }
 
-/* Shopify → GA4 mapping */
+/* ================== SHOPIFY → GA4 MAP ================== */
+
 function mapName(n) {
   switch (n) {
     case "checkout_started": return "begin_checkout";
@@ -79,15 +85,22 @@ function mapName(n) {
   }
 }
 
+/* ================== FORWARDER ================== */
+
 export async function forwardCheckoutToGA4(ev) {
   if (!MID || !SECRET) return;
-  
+
   const name = mapName(ev.event_name);
   if (!name) return;
 
+  /*
+    CRITICAL:
+    ev.raw is already the Shopify event object.
+    DO NOT parse.
+    DO NOT unwrap.
+  */
   const raw = ev.raw || {};
 
-  // 🔴 THE REAL SOURCE OF TRUTH
   const checkout =
     raw.data &&
     raw.data.checkout;
@@ -100,10 +113,10 @@ export async function forwardCheckoutToGA4(ev) {
   const attrs = attrsToObject(checkout.attributes || []);
 
   const clientId =
-  	attrs.ga4_client_id ||
-  	attrs.terra_ga_cid ||
-  	attrs._ga ||
-  	undefined;
+    attrs.ga4_client_id ||
+    attrs.terra_ga_cid ||
+    attrs._ga ||
+    undefined;
 
   if (!clientId) {
     console.log("[ga4-mp] ❌ NO CLIENT ID IN ATTRS");
@@ -111,14 +124,14 @@ export async function forwardCheckoutToGA4(ev) {
   }
 
   const sessionId =
-  	attrs.ga4_session_id ||
-  	attrs.terra_ga_sid ||
-  	undefined;
+    attrs.ga4_session_id ||
+    attrs.terra_ga_sid ||
+    undefined;
 
   const sessionNumber =
-  	attrs.ga4_session_number ||
-  	attrs.terra_ga_sn ||
-  	undefined;
+    attrs.ga4_session_number ||
+    attrs.terra_ga_sn ||
+    undefined;
 
   const items = buildItems(checkout);
   if (!items.length) {
@@ -126,29 +139,39 @@ export async function forwardCheckoutToGA4(ev) {
     return;
   }
 
-  /* GA4 EVENT PARAMS */
+  /* ================== GA4 PARAMS ================== */
+
+  const value =
+    name === "purchase"
+      ? Number(
+          (checkout.totalPrice &&
+           checkout.totalPrice.amount) || 0
+        )
+      : Number(
+          (checkout.subtotalPrice &&
+           checkout.subtotalPrice.amount) || 0
+        );
+
   const params = {
     currency: checkout.currencyCode,
-    value: Number(
-      (name === "purchase"
-      ? checkout.totalPrice && checkout.totalPrice.amount
-      : checkout.subtotalPrice && checkout.subtotalPrice.amount
-	  ) || 0
-	),
-
+    value,
     items,
     engagement_time_msec: 1,
 
     session_id: sessionId ? Number(sessionId) : undefined,
-    session_number: sessionNumber ? Number(sessionNumber) : undefined,
+    session_number: sessionNumber
+      ? Number(sessionNumber)
+      : undefined,
 
-    transaction_id: (checkout.order && checkout.order.id) ? String(checkout.order.id) : String(checkout.token),
+    transaction_id:
+      (checkout.order && checkout.order.id)
+        ? String(checkout.order.id)
+        : String(checkout.token),
 
     event_id: ev.event_id,
     debug_mode: 1
   };
 
-  /* DEBUG PROOF */
   const payload = {
     client_id: clientId,
     user_id: ev.user_id || undefined,
@@ -157,8 +180,6 @@ export async function forwardCheckoutToGA4(ev) {
   };
 
   console.log("[ga4-mp] SENDING\n", JSON.stringify(payload, null, 2));
-  
-  console.log("[ga4-mp] MID:", MID, "SECRET?", Boolean(SECRET), "name:", name);
 
   const r = await fetch(
     `https://www.google-analytics.com/mp/collect?measurement_id=${MID}&api_secret=${SECRET}`,
