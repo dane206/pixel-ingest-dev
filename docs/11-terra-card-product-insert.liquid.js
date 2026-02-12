@@ -1,16 +1,15 @@
-            <a
-              href="{{ card_product.url }}"
-              id="StandardCardNoMediaLink-{{ section_id }}-{{ card_product.id }}"
-              class="full-unstyled-link"
-              aria-labelledby="StandardCardNoMediaLink-{{ section_id }}-{{ card_product.id }} NoMediaStandardBadge-{{ section_id }}-{{ card_product.id }}"
-              data-terra-item
-              data-item-id="shopify_US_{{ card_product.id }}_{{ card_product.selected_or_first_available_variant.id }}"
-              data-item-group-id="shopify_US_{{ card_product.id }}"
-              data-item-name="{{ card_product.title | escape }}"
-              data-item-variant="{{ card_product.selected_or_first_available_variant.title | escape }}"
-              data-item-brand="{{ card_product.vendor | escape }}"
-              data-item-category="{{ card_product.type | escape }}"
-              data-item-price="{{ card_product.selected_or_first_available_variant.price | divided_by: 100.0 }}"
-              data-item-currency="{{ shop.currency }}"
-              data-item-index="{{ forloop.index | default: 1 }}"
-            >
+<a href="{{ card_product.url }}"
+id="StandardCardNoMediaLink-{{ section_id }}-{{ card_product.id }}"
+class="full-unstyled-link"
+aria-labelledby="StandardCardNoMediaLink-{{ section_id }}-{{ card_product.id }} NoMediaStandardBadge-{{ section_id }}-{{ card_product.id }}"
+data-terra-item
+data-item-id="shopify_US_{{ card_product.id }}_{{ card_product.selected_or_first_available_variant.id }}"
+data-item-group-id="shopify_US_{{ card_product.id }}"
+data-item-name="{{ card_product.title | escape }}"
+data-item-variant="{{ card_product.selected_or_first_available_variant.title | escape }}"
+data-item-brand="{{ card_product.vendor | escape }}"
+data-item-category="{{ card_product.type | escape }}"
+data-item-price="{{ card_product.selected_or_first_available_variant.price | divided_by: 100.0 }}"
+data-item-currency="{{ shop.currency }}"
+data-item-index="{{ forloop.index | default: 1 }}"
+>
