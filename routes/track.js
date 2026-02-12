@@ -16,13 +16,6 @@ export default async function trackRoute(req, res) {
     for (let i = 0; i < events.length; i++) {
       const ev = events[i] || {};
 
-      /*
-        CRITICAL:
-        ev.raw is already the Shopify event object.
-        DO NOT parse.
-        DO NOT stringify.
-      */
-
       const rawObject = ev.raw || {};
 
       // Optional: remove GTM noise safely
@@ -30,14 +23,14 @@ export default async function trackRoute(req, res) {
         delete rawObject["gtm.uniqueEventId"];
       }
 
-	rows.push({
-	  received_at: new Date(),
-	  data_source: ev.data_source || "unknown",
-	  event_name: ev.event_name || null,
-	  event_id: ev.event_id ? String(ev.event_id) : null,
-	  event_time: ev.event_time ? new Date(ev.event_time) : null,
-	  raw: rawObject
-	});
+	  rows.push({
+	    received_at: new Date(),
+	    data_source: ev.data_source || "unknown",
+	    event_name: ev.event_name || null,
+	    event_id: ev.event_id ? String(ev.event_id) : null,
+	    event_time: ev.event_time ? new Date(ev.event_time) : null,
+	    raw: JSON.stringify(rawObject || {})
+	  });
     }
 
     await insertBQ(rows);

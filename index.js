@@ -1,9 +1,11 @@
 import express from "express";
 import trackRouteV2 from "./routes/track.js";
+import { ensureRawEventsTable } from "./lib/bq.js";
 
 const app = express();
 app.disable("x-powered-by");
 
+/* Logging */
 app.use(function (req, _res, next) {
   console.log("[pixel-ingest]", req.method, req.path);
   next();
@@ -41,17 +43,30 @@ app.use(
 );
 
 /* Routes */
-app.post("/v1/track", trackRouteV2); // legacy path
-app.post("/v2/track", trackRouteV2); // new path you will test
-app.post("/track", trackRouteV2);    // back-compat
+app.post("/v1/track", trackRouteV2);
+app.post("/v2/track", trackRouteV2);
+app.post("/track", trackRouteV2);
 
 app.get("/health", function (_req, res) {
   res.status(200).send("ok");
 });
 
-/* Boot */
-
 const PORT = Number(process.env.PORT || 8080);
-app.listen(PORT, function () {
-  console.log("[pixel-ingest] listening", { port: PORT });
-});
+
+/* BOOT — schema enforced before server starts */
+async function boot() {
+  try {
+    await ensureRawEventsTable();
+
+    app.listen(PORT, function () {
+      console.log("[pixel-ingest] listening", { port: PORT });
+      console.log("[pixel-ingest] server started.");
+    });
+
+  } catch (err) {
+    console.error("❌ BOOT FAILED:", err);
+    process.exit(1);
+  }
+}
+
+boot();
