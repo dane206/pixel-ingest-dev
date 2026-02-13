@@ -16,7 +16,25 @@ export default async function trackRoute(req, res) {
     for (let i = 0; i < events.length; i++) {
       const ev = events[i] || {};
 
-      const rawObject = ev.raw || {};
+      let rawObject = ev.raw;
+      
+      // unwrap nested envelope if present
+      if (
+        rawObject &&
+        typeof rawObject === "object" &&
+        rawObject.raw &&
+        typeof rawObject.raw === "object"
+      ) {
+        rawObject = rawObject.raw;
+      }
+
+      // ensure we always have an object
+      if (!rawObject || typeof rawObject !== "object") {
+        rawObject = {
+          _terra_raw_error: true,
+          received_type: typeof ev.raw
+        };
+      }
 
       // Optional: remove GTM noise safely
       if (rawObject && rawObject["gtm.uniqueEventId"]) {
@@ -29,7 +47,7 @@ export default async function trackRoute(req, res) {
 	    event_name: ev.event_name || null,
 	    event_id: ev.event_id ? String(ev.event_id) : null,
 	    event_time: ev.event_time ? new Date(ev.event_time) : null,
-	    raw: JSON.stringify(rawObject || {})
+	    raw: JSON.stringify(rawObject)
 	  });
     }
 
@@ -45,7 +63,8 @@ export default async function trackRoute(req, res) {
       } catch (_) {}
     }
 
-    res.status(200).end();
+    // 204 is cleaner for collectors
+    res.status(204).end();
   } catch (err) {
     console.error("TRACK ROUTE ERROR:", err);
     res.status(500).end();
