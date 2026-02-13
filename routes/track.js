@@ -1,5 +1,5 @@
-import insertBQ from "../lib/bq.js";
-import { forwardCheckoutToGA4 } from "../integrations/ga4.js";
+import insertBQ from "../adapters/bigquery.adapter.js";
+import { forwardCheckoutToGA4 } from "../adapters/ga4.adapter.js";
 
 export default async function trackRoute(req, res) {
   try {

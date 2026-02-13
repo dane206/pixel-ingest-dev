@@ -1,6 +1,6 @@
 import express from "express";
 import trackRouteV2 from "./routes/track.js";
-import { ensureRawEventsTable } from "./lib/bq.js";
+import { ensureRawEventsTable } from "./adapters/bigquery.adapter.js";
 
 const app = express();
 app.disable("x-powered-by");
