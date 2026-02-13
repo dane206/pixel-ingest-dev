@@ -23,13 +23,15 @@ function attrsToObject(arr) {
 function buildItems(checkout) {
   const items = [];
 
-  for (const li of checkout.lineItems || []) {
-    if (!li || !li.variant) continue;
+  for (let i = 0; i < (checkout.lineItems || []).length; i++) {
+    const li = checkout.lineItems[i];
 
+    if (!li || !li.variant) continue;
+    
     const productId = digits(
       li.variant.product && li.variant.product.id
     );
-
+    
     const variantId = digits(li.variant.id);
     if (!productId || !variantId) continue;
 
@@ -42,12 +44,12 @@ function buildItems(checkout) {
       item_name: li.title || "",
       affiliation: "shopify_web_store",
       currency: checkout.currencyCode,
-      price: Number(li.variant.price && li.variant.price.amount),
+      price: Number((li.variant.price && li.variant.price.amount) || 0),
       quantity: li.quantity || 1,
 
       coupon: "",
       discount: 0,
-      index: 1,
+      index: i,
 
       item_brand:
         (li.variant.product && li.variant.product.vendor) || "",
@@ -99,7 +101,8 @@ export async function forwardCheckoutToGA4(ev) {
     DO NOT parse.
     DO NOT unwrap.
   */
-  const raw = ev.raw || {};
+  
+  const raw = ev.raw && typeof ev.raw === "object" ? ev.raw : {};
 
   const checkout =
     raw.data &&
@@ -112,11 +115,18 @@ export async function forwardCheckoutToGA4(ev) {
 
   const attrs = attrsToObject(checkout.attributes || []);
 
-  const clientId =
+  let clientId =
     attrs.ga4_client_id ||
     attrs.terra_ga_cid ||
-    attrs._ga ||
     undefined;
+
+  // last-ditch cleanup if someone ever passes _ga
+  if (!clientId && attrs._ga) {
+    const parts = String(attrs._ga).split(".");
+    if (parts.length >= 4) {
+      clientId = parts[2] + "." + parts[3];
+    }
+  }
 
   if (!clientId) {
     console.log("[ga4-mp] ❌ NO CLIENT ID IN ATTRS");
@@ -138,24 +148,37 @@ export async function forwardCheckoutToGA4(ev) {
     console.log("[ga4-mp] ❌ NO ITEMS");
     return;
   }
+  
+  /* ================== GA4 USER ID ================== */
+
+  var gaUserId =
+    (checkout.customer && checkout.customer.id) ||
+    (checkout.order &&
+      checkout.order.customer &&
+      checkout.order.customer.id) ||
+    undefined;
+
+  if (gaUserId) gaUserId = String(gaUserId);
 
   /* ================== GA4 PARAMS ================== */
 
+  const totalAmount =
+    checkout.totalPrice && checkout.totalPrice.amount;
+
+  const subtotalAmount =
+    checkout.subtotalPrice && checkout.subtotalPrice.amount;
+
   const value =
     name === "purchase"
-      ? Number(
-          (checkout.totalPrice &&
-           checkout.totalPrice.amount) || 0
-        )
-      : Number(
-          (checkout.subtotalPrice &&
-           checkout.subtotalPrice.amount) || 0
-        );
+      ? Number(totalAmount || 0)
+      : Number(subtotalAmount || 0);
 
   const params = {
     currency: checkout.currencyCode,
     value,
     items,
+    // GA4 Measurement Protocol requires engagement_time_msec for event processing.
+	// Using minimal value since this is a server-side fire.
     engagement_time_msec: 1,
 
     session_id: sessionId ? Number(sessionId) : undefined,
@@ -167,16 +190,34 @@ export async function forwardCheckoutToGA4(ev) {
       (checkout.order && checkout.order.id)
         ? String(checkout.order.id)
         : String(checkout.token),
+        
+    coupon:
+  	  (checkout.discountApplications &&
+       checkout.discountApplications[0] &&
+       checkout.discountApplications[0].title) || undefined,
+
+    shipping:
+      Number(
+        (checkout.shippingLine &&
+         checkout.shippingLine.price &&
+         checkout.shippingLine.price.amount) || 0
+      ),
+
+    tax:
+      Number(
+        (checkout.totalTax &&
+         checkout.totalTax.amount) || 0
+      ),
 
     event_id: ev.event_id,
-    debug_mode: 1
+    debug_mode: process.env.NODE_ENV !== "production" ? 1 : undefined
   };
-
+  
   const payload = {
-    client_id: clientId,
-    user_id: ev.user_id || undefined,
-    timestamp_micros: Date.now() * 1000,
-    events: [{ name, params }]
+  	client_id: clientId,
+  	user_id: gaUserId || undefined,
+  	timestamp_micros: Date.now() * 1000,
+  	events: [{ name, params }]
   };
 
   console.log("[ga4-mp] SENDING\n", JSON.stringify(payload, null, 2));
