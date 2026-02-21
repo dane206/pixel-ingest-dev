@@ -190,6 +190,16 @@
 
   window.terra_ctx = ctx;
 
+  /* =========================
+    CTX COOKIE MIRROR (CRITICAL)
+  ========================= */
+
+  try {
+    if (ctx && ctx.ctx_id) {
+      setCookie("ctx_id", ctx.ctx_id, 1800);
+    }
+  } catch (_) {}
+
   // Required public getters (do not remove)
   window.terraGetCTX = function () { return window.terra_ctx || null; };
   window.terraGetUUID = uuidv4;

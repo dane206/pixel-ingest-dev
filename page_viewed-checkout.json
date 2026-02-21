@@ -1,0 +1,95 @@
+{
+    "data_source": "shopify_web_pixel",
+    "event_name": "page_viewed",
+    "event_id": "sh-55d9d38a-9159-42CE-303B-199ABCAA23A4",
+    "event_time": "2026-02-13T07:14:23.144Z",
+    "ctx_id": null,
+    "th_vid": "8a10bae8-d4e5-43aa-a453-9d39395e1397",
+    "session_key": null,
+    "session_start": null,
+    "terra_ft_source": "dane",
+    "terra_ft_medium": "test",
+    "terra_ft_campaign": "validate",
+    "terra_ft_content": null,
+    "terra_ft_term": null,
+    "terra_ft_id": "1",
+    "terra_lt_source": "dane",
+    "terra_lt_medium": "test",
+    "terra_lt_campaign": "validate",
+    "terra_lt_content": null,
+    "terra_lt_term": null,
+    "terra_lt_id": "1",
+    "terra_gclid": null,
+    "terra_gbraid": null,
+    "terra_wbraid": null,
+    "terra_msclkid": null,
+    "terra_fbclid": null,
+    "terra_ttclid": null,
+    "terra_landing_page": "https://terra-dev-plus-store.myshopify.com/?gtm_debug=1769221204137",
+    "terra_referrer": "https://tagassistant.google.com/",
+    "cart_currency": "USD",
+    "localization": "US",
+    "raw": {
+        "id": "sh-55d9d38a-9159-42CE-303B-199ABCAA23A4",
+        "name": "page_viewed",
+        "data": {},
+        "type": "standard",
+        "timestamp": "2026-02-13T07:14:23.144Z",
+        "context": {
+            "document": {
+                "location": {
+                    "href": "https://terra-dev-plus-store.myshopify.com/checkouts/cn/hWN8jDGWZhzo5GQw1TShOh0b/en-us?_r=AQABSQl2j27HaqOZluX_EdE4YnWscz1DyJvcUcWG2V8WQDA&preview_theme_id=148891467930",
+                    "hash": "",
+                    "host": "terra-dev-plus-store.myshopify.com",
+                    "hostname": "terra-dev-plus-store.myshopify.com",
+                    "origin": "https://terra-dev-plus-store.myshopify.com",
+                    "pathname": "/checkouts/cn/hWN8jDGWZhzo5GQw1TShOh0b/en-us",
+                    "port": "",
+                    "protocol": "https:",
+                    "search": "?_r=AQABSQl2j27HaqOZluX_EdE4YnWscz1DyJvcUcWG2V8WQDA&preview_theme_id=148891467930"
+                },
+                "referrer": "https://terra-dev-plus-store.myshopify.com/products/selling-plans-ski-wax",
+                "characterSet": "UTF-8",
+                "title": "Checkout - terra-dev-plus-store"
+            },
+            "navigator": {
+                "language": "en-US",
+                "cookieEnabled": true,
+                "languages": [
+                    "en-US"
+                ],
+                "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"
+            },
+            "window": {
+                "innerHeight": 166,
+                "innerWidth": 1643,
+                "outerHeight": 960,
+                "outerWidth": 1479,
+                "pageXOffset": 0,
+                "pageYOffset": 0,
+                "location": {
+                    "href": "https://terra-dev-plus-store.myshopify.com/checkouts/cn/hWN8jDGWZhzo5GQw1TShOh0b/en-us?_r=AQABSQl2j27HaqOZluX_EdE4YnWscz1DyJvcUcWG2V8WQDA&preview_theme_id=148891467930",
+                    "hash": "",
+                    "host": "terra-dev-plus-store.myshopify.com",
+                    "hostname": "terra-dev-plus-store.myshopify.com",
+                    "origin": "https://terra-dev-plus-store.myshopify.com",
+                    "pathname": "/checkouts/cn/hWN8jDGWZhzo5GQw1TShOh0b/en-us",
+                    "port": "",
+                    "protocol": "https:",
+                    "search": "?_r=AQABSQl2j27HaqOZluX_EdE4YnWscz1DyJvcUcWG2V8WQDA&preview_theme_id=148891467930"
+                },
+                "origin": "https://terra-dev-plus-store.myshopify.com",
+                "screen": {
+                    "height": 1112,
+                    "width": 1710
+                },
+                "screenX": 0,
+                "screenY": 39,
+                "scrollX": 0,
+                "scrollY": 0
+            }
+        },
+        "seq": 1,
+        "clientId": "c39ac1e5-559b-49e3-bd26-481a67a4faf5"
+    }
+}

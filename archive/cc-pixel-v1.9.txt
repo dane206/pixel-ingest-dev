@@ -1,0 +1,116 @@
+console.log("TERRA_CHECKOUT_PIXEL_V1_ACTIVE");
+
+var TERRA_ENV = "prod"; // MUST be "dev" or "prod"
+
+var ENDPOINT = "";
+if (TERRA_ENV === "prod") {
+  ENDPOINT = "https://pixel-ingest-prod-279703303694.us-central1.run.app/v1/track";
+} else if (TERRA_ENV === "dev") {
+  ENDPOINT = "https://pixel-ingest-dev-600339193870.us-central1.run.app/v2/track";
+} else {
+  throw new Error("Invalid TERRA_ENV");
+}
+
+function uuidv4() {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    var r = Math.random() * 16 | 0;
+    var v = c === "x" ? r : (r & 3 | 8);
+    return v.toString(16);
+  });
+}
+
+function digits(x) {
+  return String(x || "").replace(/\D/g, "");
+}
+
+function post(event_name, event) {
+  try {
+    fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      keepalive: true,
+      body: JSON.stringify({
+        data_source: "shopify_checkout_pixel",
+        event_name: event_name,
+        event_id: event && event.id ? String(event.id) : (checkoutId ? String(checkoutId) : uuidv4()),
+        event_time: new Date().toISOString(),
+        raw: JSON.parse(JSON.stringify(event))
+      })
+    });
+  } catch (_) {}
+}
+
+function getAttr(key, attrs) {
+  if (!attrs || !attrs.length) return null;
+  for (var i = 0; i < attrs.length; i++) {
+    if (attrs[i].key === key) return attrs[i].value;
+  }
+  return null;
+}
+
+function hashEmail(email, callback) {
+  if (!email || !crypto || !crypto.subtle) return callback(null);
+  var encoder = new TextEncoder();
+  var data = encoder.encode(email.toLowerCase().trim());
+  crypto.subtle.digest("SHA-256", data)
+    .then(function (hash) {
+      var hex = Array.prototype.map.call(new Uint8Array(hash), function (b) {
+        return ("00" + b.toString(16)).slice(-2);
+      }).join("");
+      callback(hex);
+    })
+    .catch(function () {
+      callback(null);
+    });
+}
+
+analytics.subscribe("checkout_started", function (event) {
+  if (!event || !event.data || !event.data.checkout) return;
+  post("checkout_started", event);
+});
+
+analytics.subscribe("checkout_contact_info_submitted", function (event) {
+  if (!event || !event.data || !event.data.checkout) return;
+  post("checkout_contact_info_submitted", event);
+});
+
+analytics.subscribe("checkout_address_info_submitted", function (event) {
+  if (!event || !event.data || !event.data.checkout) return;
+  post("checkout_address_info_submitted", event);
+});
+
+analytics.subscribe("checkout_shipping_info_submitted", function (event) {
+  if (!event || !event.data || !event.data.checkout) return;
+  post("checkout_shipping_info_submitted", event);
+});
+
+analytics.subscribe("payment_info_submitted", function (event) {
+  if (!event || !event.data || !event.data.checkout) return;
+  post("payment_info_submitted", event);
+});
+
+analytics.subscribe("checkout_completed", function (ev) {
+  if (!ev || !ev.data || !ev.data.checkout) return;
+
+  var checkout = ev.data.checkout;
+  var attrs = checkout.attributes || [];
+
+  var identity = {
+    customer_id:
+      (checkout.customer && checkout.customer.id) ||
+      (checkout.order && checkout.order.customer && checkout.order.customer.id) ||
+      null,
+    visitor_id: getAttr("th_vid", attrs),
+    ga_client_id: getAttr("ga4_client_id", attrs),
+    transaction_id: digits(checkout.order && checkout.order.id)
+  };
+
+  hashEmail(checkout.email || null, function (emailHash) {
+    identity.email_hash = emailHash;
+
+    var enriched = JSON.parse(JSON.stringify(ev));
+    enriched.identity = identity;
+
+    post("checkout_completed", enriched);
+  });
+});

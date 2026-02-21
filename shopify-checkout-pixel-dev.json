@@ -1,0 +1,828 @@
+{
+    "data_source": "shopify_checkout_pixel",
+    "event_name": "checkout_started",
+    "event_id": "sh-53ba7d6b-D8E0-42F3-899F-3DC80DB0FF1A",
+    "event_time": "2026-02-12T21:20:54.718Z",
+    "ga_client_id": "1130967260.1767928620",
+    "ga_session_id": "1770931229",
+    "ga_session_number": "9",
+    "ctx_id": "54660e61-1612-4af3-8317-74783abc49f8",
+    "th_vid": "8a10bae8-d4e5-43aa-a453-9d39395e1397",
+    "session_key": "3959b811-427d-4a74-8e1e-4510dbc1ecdf",
+    "session_start": "2026-02-12T21:20:39.969Z",
+    "terra_ft_source": "dane",
+    "terra_ft_medium": "test",
+    "terra_ft_campaign": "validate",
+    "terra_ft_content": null,
+    "terra_ft_term": null,
+    "terra_ft_id": "1",
+    "terra_lt_source": "dane",
+    "terra_lt_medium": "test",
+    "terra_lt_campaign": "validate",
+    "terra_lt_content": null,
+    "terra_lt_term": null,
+    "terra_lt_id": "1",
+    "terra_gclid": null,
+    "terra_gbraid": null,
+    "terra_wbraid": null,
+    "terra_msclkid": null,
+    "terra_fbclid": null,
+    "terra_ttclid": null,
+    "raw": {
+        "id": "sh-53ba7d6b-D8E0-42F3-899F-3DC80DB0FF1A",
+        "name": "checkout_started",
+        "data": {
+            "checkout": {
+                "buyerAcceptsEmailMarketing": true,
+                "buyerAcceptsSmsMarketing": false,
+                "attributes": [
+                    {
+                        "key": "th_vid",
+                        "value": "8a10bae8-d4e5-43aa-a453-9d39395e1397"
+                    },
+                    {
+                        "key": "session_key",
+                        "value": "3959b811-427d-4a74-8e1e-4510dbc1ecdf"
+                    },
+                    {
+                        "key": "session_start",
+                        "value": "2026-02-12T21:20:39.969Z"
+                    },
+                    {
+                        "key": "terra_ga_cid",
+                        "value": "1130967260.1767928620"
+                    },
+                    {
+                        "key": "ga4_client_id",
+                        "value": "1130967260.1767928620"
+                    },
+                    {
+                        "key": "terra_ft_source",
+                        "value": "dane"
+                    },
+                    {
+                        "key": "terra_ft_medium",
+                        "value": "test"
+                    },
+                    {
+                        "key": "terra_ft_campaign",
+                        "value": "validate"
+                    },
+                    {
+                        "key": "terra_ft_id",
+                        "value": "1"
+                    },
+                    {
+                        "key": "terra_lt_medium",
+                        "value": "test"
+                    },
+                    {
+                        "key": "terra_lt_campaign",
+                        "value": "validate"
+                    },
+                    {
+                        "key": "terra_lt_id",
+                        "value": "1"
+                    },
+                    {
+                        "key": "terra_ga_sid",
+                        "value": "1770931229"
+                    },
+                    {
+                        "key": "ga4_session_id",
+                        "value": "1770931229"
+                    },
+                    {
+                        "key": "terra_ga_sn",
+                        "value": "9"
+                    },
+                    {
+                        "key": "ga4_session_number",
+                        "value": "9"
+                    },
+                    {
+                        "key": "terra_lt_source",
+                        "value": "dane"
+                    },
+                    {
+                        "key": "ctx_id",
+                        "value": "54660e61-1612-4af3-8317-74783abc49f8"
+                    }
+                ],
+                "billingAddress": {
+                    "address1": null,
+                    "address2": null,
+                    "city": null,
+                    "country": "US",
+                    "countryCode": "US",
+                    "firstName": null,
+                    "lastName": null,
+                    "phone": null,
+                    "province": "WA",
+                    "provinceCode": "WA",
+                    "zip": null
+                },
+                "token": "f765e91461643575eb9bb15eeb3b0e6e",
+                "currencyCode": "USD",
+                "discountApplications": [],
+                "discountsAmount": {
+                    "amount": 0,
+                    "currencyCode": "USD"
+                },
+                "email": "dane@rs2media.com",
+                "phone": "",
+                "lineItems": [
+                    {
+                        "discountAllocations": [],
+                        "id": "47242781786266",
+                        "quantity": 1,
+                        "title": "Liposomal Curcumin",
+                        "variant": {
+                            "id": "47242781786266",
+                            "image": {
+                                "src": "https://cdn.shopify.com/s/files/1/0680/8820/1370/files/TERRA_HEALTH_ESSENTIALS_LIPOSOMAL_CURCUMIN_SINGLE_BOTTLE_STUDIO_1090X1090_f5dd798d-e05c-4424-a50b-45958a8e6ef6.png?v=1770850081"
+                            },
+                            "price": {
+                                "amount": 40,
+                                "currencyCode": "USD"
+                            },
+                            "product": {
+                                "id": "8782551351450",
+                                "title": "Liposomal Curcumin",
+                                "vendor": "terra-dev-plus-store",
+                                "type": "",
+                                "untranslatedTitle": "Liposomal Curcumin",
+                                "url": "/products/liposomal-curcumin"
+                            },
+                            "sku": "LIPCURCB1",
+                            "title": null,
+                            "untranslatedTitle": null
+                        },
+                        "finalLinePrice": {
+                            "amount": 40,
+                            "currencyCode": "USD"
+                        },
+                        "sellingPlanAllocation": null,
+                        "properties": []
+                    },
+                    {
+                        "discountAllocations": [],
+                        "id": "47242783686810",
+                        "quantity": 2,
+                        "title": "Liposomal Glutathione",
+                        "variant": {
+                            "id": "47242783686810",
+                            "image": {
+                                "src": "https://cdn.shopify.com/s/files/1/0680/8820/1370/files/TERRA_HEALTH_ESSENTIALS_LIPOSOMAL_GLUTATHIONE_SINGLE_BOTTLE_STUDIO_1090X1090_dbc4d1ce-b02b-469d-ad01-ae59513c2911.png?v=1770850188"
+                            },
+                            "price": {
+                                "amount": 45,
+                                "currencyCode": "USD"
+                            },
+                            "product": {
+                                "id": "8782551974042",
+                                "title": "Liposomal Glutathione",
+                                "vendor": "terra-dev-plus-store",
+                                "type": "",
+                                "untranslatedTitle": "Liposomal Glutathione",
+                                "url": "/products/liposomal-glutathione"
+                            },
+                            "sku": "THELIPGLUTATB1",
+                            "title": null,
+                            "untranslatedTitle": null
+                        },
+                        "finalLinePrice": {
+                            "amount": 90,
+                            "currencyCode": "USD"
+                        },
+                        "sellingPlanAllocation": null,
+                        "properties": []
+                    },
+                    {
+                        "discountAllocations": [],
+                        "id": "45808778281114",
+                        "quantity": 1,
+                        "title": "Super Greens (Subscription)",
+                        "variant": {
+                            "id": "45808778281114",
+                            "image": {
+                                "src": "https://cdn.shopify.com/s/files/1/0680/8820/1370/files/TERRA_HEALTH_ESSENTIALS_SUPER_GREENS_SINGLE_PACK_STUDIO_1090X1090_1b9ec8f4-6835-4474-b6f9-f645a51a43cf.jpg?v=1770852874"
+                            },
+                            "price": {
+                                "amount": 49,
+                                "currencyCode": "USD"
+                            },
+                            "product": {
+                                "id": "8514074673306",
+                                "title": "Super Greens (Subscription)",
+                                "vendor": "terra-dev-plus-store",
+                                "type": "",
+                                "untranslatedTitle": "Super Greens (Subscription)",
+                                "url": "/products/selling-plans-ski-wax"
+                            },
+                            "sku": "SUB-THESUPERGRNB1",
+                            "title": "30 Day Supply - SUB",
+                            "untranslatedTitle": "30 Day Supply - SUB"
+                        },
+                        "finalLinePrice": {
+                            "amount": 49,
+                            "currencyCode": "USD"
+                        },
+                        "sellingPlanAllocation": null,
+                        "properties": []
+                    }
+                ],
+                "localization": {
+                    "country": {
+                        "isoCode": "US"
+                    },
+                    "language": {
+                        "isoCode": "en-US"
+                    },
+                    "market": {
+                        "id": "gid://shopify/Market/50758254746",
+                        "handle": "us"
+                    }
+                },
+                "order": {
+                    "id": null,
+                    "customer": {
+                        "id": null,
+                        "isFirstOrder": null
+                    }
+                },
+                "delivery": {
+                    "selectedDeliveryOptions": [
+                        {
+                            "cost": {
+                                "amount": 0,
+                                "currencyCode": "USD"
+                            },
+                            "costAfterDiscounts": {
+                                "amount": 0,
+                                "currencyCode": "USD"
+                            },
+                            "description": null,
+                            "handle": "f765e91461643575eb9bb15eeb3b0e6e-dc1a7cd89a4f69faa67a7a9cd4efbd07",
+                            "title": "Economy",
+                            "type": "shipping"
+                        }
+                    ]
+                },
+                "shippingAddress": {
+                    "address1": "1715 harbor ave sw # 2",
+                    "address2": null,
+                    "city": "seattle",
+                    "country": "US",
+                    "countryCode": "US",
+                    "firstName": "dane",
+                    "lastName": "h",
+                    "phone": null,
+                    "province": "WA",
+                    "provinceCode": "WA",
+                    "zip": "98126"
+                },
+                "subtotalPrice": {
+                    "amount": 179,
+                    "currencyCode": "USD"
+                },
+                "shippingLine": {
+                    "price": {
+                        "amount": 0,
+                        "currencyCode": "USD"
+                    }
+                },
+                "smsMarketingPhone": null,
+                "totalTax": {
+                    "amount": 0,
+                    "currencyCode": "USD"
+                },
+                "totalPrice": {
+                    "amount": 179,
+                    "currencyCode": "USD"
+                },
+                "transactions": []
+            }
+        },
+        "type": "standard",
+        "timestamp": "2026-02-12T21:20:54.718Z",
+        "context": {
+            "document": {
+                "location": {
+                    "href": "https://terra-dev-plus-store.myshopify.com/checkouts/cn/hWN8doeAGdvplNbLG6gMGsTA/en-us?_r=AQABVNmxueBfTu8ziA1uX4UV3bSfQE6qefKSeOoO7-ErI4g&preview_theme_id=148891467930",
+                    "hash": "",
+                    "host": "terra-dev-plus-store.myshopify.com",
+                    "hostname": "terra-dev-plus-store.myshopify.com",
+                    "origin": "https://terra-dev-plus-store.myshopify.com",
+                    "pathname": "/checkouts/cn/hWN8doeAGdvplNbLG6gMGsTA/en-us",
+                    "port": "",
+                    "protocol": "https:",
+                    "search": "?_r=AQABVNmxueBfTu8ziA1uX4UV3bSfQE6qefKSeOoO7-ErI4g&preview_theme_id=148891467930"
+                },
+                "referrer": "https://terra-dev-plus-store.myshopify.com/products/liposomal-curcumin",
+                "characterSet": "UTF-8",
+                "title": "Checkout - terra-dev-plus-store"
+            },
+            "navigator": {
+                "language": "en-US",
+                "cookieEnabled": true,
+                "languages": [
+                    "en-US"
+                ],
+                "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"
+            },
+            "window": {
+                "innerHeight": 406,
+                "innerWidth": 1643,
+                "outerHeight": 983,
+                "outerWidth": 1479,
+                "pageXOffset": 0,
+                "pageYOffset": 0,
+                "location": {
+                    "href": "https://terra-dev-plus-store.myshopify.com/checkouts/cn/hWN8doeAGdvplNbLG6gMGsTA/en-us?_r=AQABVNmxueBfTu8ziA1uX4UV3bSfQE6qefKSeOoO7-ErI4g&preview_theme_id=148891467930",
+                    "hash": "",
+                    "host": "terra-dev-plus-store.myshopify.com",
+                    "hostname": "terra-dev-plus-store.myshopify.com",
+                    "origin": "https://terra-dev-plus-store.myshopify.com",
+                    "pathname": "/checkouts/cn/hWN8doeAGdvplNbLG6gMGsTA/en-us",
+                    "port": "",
+                    "protocol": "https:",
+                    "search": "?_r=AQABVNmxueBfTu8ziA1uX4UV3bSfQE6qefKSeOoO7-ErI4g&preview_theme_id=148891467930"
+                },
+                "origin": "https://terra-dev-plus-store.myshopify.com",
+                "screen": {
+                    "height": 1112,
+                    "width": 1710
+                },
+                "screenX": 0,
+                "screenY": 39,
+                "scrollX": 0,
+                "scrollY": 0
+            }
+        },
+        "seq": 1,
+        "clientId": "c39ac1e5-559b-49e3-bd26-481a67a4faf5"
+    }
+}
+
+{
+    "data_source": "shopify_checkout_pixel",
+    "event_name": "checkout_completed",
+    "event_id": "c9c2b914-ae72-4711-8c70-9f3a8559051b",
+    "event_time": "2026-02-12T21:21:16.068Z",
+    "ga_client_id": "1130967260.1767928620",
+    "ga_session_id": "1770931229",
+    "ga_session_number": "9",
+    "ctx_id": "54660e61-1612-4af3-8317-74783abc49f8",
+    "th_vid": "8a10bae8-d4e5-43aa-a453-9d39395e1397",
+    "session_key": "3959b811-427d-4a74-8e1e-4510dbc1ecdf",
+    "session_start": "2026-02-12T21:20:39.969Z",
+    "terra_ft_source": "dane",
+    "terra_ft_medium": "test",
+    "terra_ft_campaign": "validate",
+    "terra_ft_content": null,
+    "terra_ft_term": null,
+    "terra_ft_id": "1",
+    "terra_lt_source": "dane",
+    "terra_lt_medium": "test",
+    "terra_lt_campaign": "validate",
+    "terra_lt_content": null,
+    "terra_lt_term": null,
+    "terra_lt_id": "1",
+    "terra_gclid": null,
+    "terra_gbraid": null,
+    "terra_wbraid": null,
+    "terra_msclkid": null,
+    "terra_fbclid": null,
+    "terra_ttclid": null,
+    "raw": {
+        "id": "c9c2b914-ae72-4711-8c70-9f3a8559051b",
+        "name": "checkout_completed",
+        "data": {
+            "checkout": {
+                "buyerAcceptsEmailMarketing": true,
+                "buyerAcceptsSmsMarketing": false,
+                "attributes": [
+                    {
+                        "key": "th_vid",
+                        "value": "8a10bae8-d4e5-43aa-a453-9d39395e1397",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "session_key",
+                        "value": "3959b811-427d-4a74-8e1e-4510dbc1ecdf",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "session_start",
+                        "value": "2026-02-12T21:20:39.969Z",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "terra_ga_cid",
+                        "value": "1130967260.1767928620",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "ga4_client_id",
+                        "value": "1130967260.1767928620",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "terra_ft_source",
+                        "value": "dane",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "terra_ft_medium",
+                        "value": "test",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "terra_ft_campaign",
+                        "value": "validate",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "terra_ft_id",
+                        "value": "1",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "terra_lt_medium",
+                        "value": "test",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "terra_lt_campaign",
+                        "value": "validate",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "terra_lt_id",
+                        "value": "1",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "terra_ga_sid",
+                        "value": "1770931229",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "ga4_session_id",
+                        "value": "1770931229",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "terra_ga_sn",
+                        "value": "9",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "ga4_session_number",
+                        "value": "9",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "terra_lt_source",
+                        "value": "dane",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "ctx_id",
+                        "value": "54660e61-1612-4af3-8317-74783abc49f8",
+                        "__typename": "NoteAttribute"
+                    }
+                ],
+                "billingAddress": {
+                    "address1": "1715 harbor ave sw # 2",
+                    "address2": null,
+                    "city": "seattle",
+                    "country": "US",
+                    "countryCode": "US",
+                    "firstName": "dane",
+                    "lastName": "h",
+                    "phone": null,
+                    "province": "WA",
+                    "provinceCode": "WA",
+                    "zip": "98126"
+                },
+                "token": "f765e91461643575eb9bb15eeb3b0e6e",
+                "currencyCode": "USD",
+                "discountApplications": [
+                    {
+                        "allocationMethod": "ACROSS",
+                        "targetSelection": "ALL",
+                        "targetType": "LINE_ITEM",
+                        "title": "rs2mgmt99x",
+                        "type": "DISCOUNT_CODE",
+                        "value": {
+                            "percentage": 99
+                        }
+                    }
+                ],
+                "discountsAmount": {
+                    "amount": 177.21,
+                    "currencyCode": "USD"
+                },
+                "email": "dane@rs2media.com",
+                "phone": null,
+                "lineItems": [
+                    {
+                        "discountAllocations": [
+                            {
+                                "amount": {
+                                    "amount": 39.6,
+                                    "currencyCode": "USD"
+                                },
+                                "discountApplication": {
+                                    "allocationMethod": "ACROSS",
+                                    "targetSelection": "ALL",
+                                    "targetType": "LINE_ITEM",
+                                    "title": "rs2mgmt99x",
+                                    "type": "DISCOUNT_CODE",
+                                    "value": {
+                                        "percentage": 99
+                                    }
+                                }
+                            }
+                        ],
+                        "id": "47242781786266",
+                        "quantity": 1,
+                        "title": "Liposomal Curcumin",
+                        "variant": {
+                            "id": "47242781786266",
+                            "image": {
+                                "src": "https://cdn.shopify.com/s/files/1/0680/8820/1370/files/TERRA_HEALTH_ESSENTIALS_LIPOSOMAL_CURCUMIN_SINGLE_BOTTLE_STUDIO_1090X1090_f5dd798d-e05c-4424-a50b-45958a8e6ef6.png?v=1770850081"
+                            },
+                            "price": {
+                                "amount": 40,
+                                "currencyCode": "USD"
+                            },
+                            "product": {
+                                "id": "8782551351450",
+                                "title": "Liposomal Curcumin",
+                                "vendor": "terra-dev-plus-store",
+                                "type": "",
+                                "untranslatedTitle": "Liposomal Curcumin",
+                                "url": "/products/liposomal-curcumin"
+                            },
+                            "sku": "LIPCURCB1",
+                            "title": null,
+                            "untranslatedTitle": ""
+                        },
+                        "finalLinePrice": {
+                            "amount": 40,
+                            "currencyCode": "USD"
+                        },
+                        "sellingPlanAllocation": null,
+                        "properties": []
+                    },
+                    {
+                        "discountAllocations": [
+                            {
+                                "amount": {
+                                    "amount": 89.1,
+                                    "currencyCode": "USD"
+                                },
+                                "discountApplication": {
+                                    "allocationMethod": "ACROSS",
+                                    "targetSelection": "ALL",
+                                    "targetType": "LINE_ITEM",
+                                    "title": "rs2mgmt99x",
+                                    "type": "DISCOUNT_CODE",
+                                    "value": {
+                                        "percentage": 99
+                                    }
+                                }
+                            }
+                        ],
+                        "id": "47242783686810",
+                        "quantity": 2,
+                        "title": "Liposomal Glutathione",
+                        "variant": {
+                            "id": "47242783686810",
+                            "image": {
+                                "src": "https://cdn.shopify.com/s/files/1/0680/8820/1370/files/TERRA_HEALTH_ESSENTIALS_LIPOSOMAL_GLUTATHIONE_SINGLE_BOTTLE_STUDIO_1090X1090_dbc4d1ce-b02b-469d-ad01-ae59513c2911.png?v=1770850188"
+                            },
+                            "price": {
+                                "amount": 45,
+                                "currencyCode": "USD"
+                            },
+                            "product": {
+                                "id": "8782551974042",
+                                "title": "Liposomal Glutathione",
+                                "vendor": "terra-dev-plus-store",
+                                "type": "",
+                                "untranslatedTitle": "Liposomal Glutathione",
+                                "url": "/products/liposomal-glutathione"
+                            },
+                            "sku": "THELIPGLUTATB1",
+                            "title": null,
+                            "untranslatedTitle": ""
+                        },
+                        "finalLinePrice": {
+                            "amount": 90,
+                            "currencyCode": "USD"
+                        },
+                        "sellingPlanAllocation": null,
+                        "properties": []
+                    },
+                    {
+                        "discountAllocations": [
+                            {
+                                "amount": {
+                                    "amount": 48.51,
+                                    "currencyCode": "USD"
+                                },
+                                "discountApplication": {
+                                    "allocationMethod": "ACROSS",
+                                    "targetSelection": "ALL",
+                                    "targetType": "LINE_ITEM",
+                                    "title": "rs2mgmt99x",
+                                    "type": "DISCOUNT_CODE",
+                                    "value": {
+                                        "percentage": 99
+                                    }
+                                }
+                            }
+                        ],
+                        "id": "45808778281114",
+                        "quantity": 1,
+                        "title": "Super Greens (Subscription)",
+                        "variant": {
+                            "id": "45808778281114",
+                            "image": {
+                                "src": "https://cdn.shopify.com/s/files/1/0680/8820/1370/files/TERRA_HEALTH_ESSENTIALS_SUPER_GREENS_SINGLE_PACK_STUDIO_1090X1090_1b9ec8f4-6835-4474-b6f9-f645a51a43cf.jpg?v=1770852874"
+                            },
+                            "price": {
+                                "amount": 49,
+                                "currencyCode": "USD"
+                            },
+                            "product": {
+                                "id": "8514074673306",
+                                "title": "Super Greens (Subscription)",
+                                "vendor": "terra-dev-plus-store",
+                                "type": "",
+                                "untranslatedTitle": "Super Greens (Subscription)",
+                                "url": "/products/selling-plans-ski-wax"
+                            },
+                            "sku": "SUB-THESUPERGRNB1",
+                            "title": "30 Day Supply - SUB",
+                            "untranslatedTitle": "30 Day Supply - SUB"
+                        },
+                        "finalLinePrice": {
+                            "amount": 49,
+                            "currencyCode": "USD"
+                        },
+                        "sellingPlanAllocation": null,
+                        "properties": []
+                    }
+                ],
+                "localization": {
+                    "country": {
+                        "isoCode": "US"
+                    },
+                    "language": {
+                        "isoCode": "en-US"
+                    },
+                    "market": {
+                        "id": "gid://shopify/Market/50758254746",
+                        "handle": "us"
+                    }
+                },
+                "order": {
+                    "id": "6188210716826",
+                    "customer": {
+                        "id": "8222774984858",
+                        "isFirstOrder": false
+                    }
+                },
+                "delivery": {
+                    "selectedDeliveryOptions": [
+                        {
+                            "cost": {
+                                "amount": 4.9,
+                                "currencyCode": "USD"
+                            },
+                            "costAfterDiscounts": {
+                                "amount": 4.9,
+                                "currencyCode": "USD"
+                            },
+                            "description": null,
+                            "handle": "f765e91461643575eb9bb15eeb3b0e6e-efb988e33c5c60287b6c4f2b06b49bda",
+                            "title": "Economy",
+                            "type": "shipping"
+                        }
+                    ]
+                },
+                "shippingAddress": {
+                    "address1": "1715 harbor ave sw # 2",
+                    "address2": null,
+                    "city": "seattle",
+                    "country": "US",
+                    "countryCode": "US",
+                    "firstName": "dane",
+                    "lastName": "h",
+                    "phone": null,
+                    "province": "WA",
+                    "provinceCode": "WA",
+                    "zip": "98126"
+                },
+                "subtotalPrice": {
+                    "amount": 1.79,
+                    "currencyCode": "USD"
+                },
+                "shippingLine": {
+                    "price": {
+                        "amount": 4.9,
+                        "currencyCode": "USD"
+                    }
+                },
+                "smsMarketingPhone": null,
+                "totalTax": {
+                    "amount": 0,
+                    "currencyCode": "USD"
+                },
+                "totalPrice": {
+                    "amount": 6.69,
+                    "currencyCode": "USD"
+                },
+                "transactions": [
+                    {
+                        "amount": {
+                            "amount": 6.69,
+                            "currencyCode": "USD"
+                        },
+                        "gateway": "bogus",
+                        "paymentMethod": {
+                            "type": "creditCard",
+                            "name": "BOGUS"
+                        }
+                    }
+                ]
+            }
+        },
+        "type": "standard",
+        "timestamp": "2026-02-12T21:21:16.068Z",
+        "context": {
+            "document": {
+                "location": {
+                    "href": "https://terra-dev-plus-store.myshopify.com/checkouts/cn/hWN8doeAGdvplNbLG6gMGsTA/en-us/thank-you?_r=AQABVNmxueBfTu8ziA1uX4UV3bSfQE6qefKSeOoO7-ErI4g",
+                    "hash": "",
+                    "host": "terra-dev-plus-store.myshopify.com",
+                    "hostname": "terra-dev-plus-store.myshopify.com",
+                    "origin": "https://terra-dev-plus-store.myshopify.com",
+                    "pathname": "/checkouts/cn/hWN8doeAGdvplNbLG6gMGsTA/en-us/thank-you",
+                    "port": "",
+                    "protocol": "https:",
+                    "search": "?_r=AQABVNmxueBfTu8ziA1uX4UV3bSfQE6qefKSeOoO7-ErI4g"
+                },
+                "referrer": "https://terra-dev-plus-store.myshopify.com/products/liposomal-curcumin",
+                "characterSet": "UTF-8",
+                "title": "Checkout - terra-dev-plus-store"
+            },
+            "navigator": {
+                "language": "en-US",
+                "cookieEnabled": true,
+                "languages": [
+                    "en-US"
+                ],
+                "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"
+            },
+            "window": {
+                "innerHeight": 406,
+                "innerWidth": 1643,
+                "outerHeight": 983,
+                "outerWidth": 1479,
+                "pageXOffset": 0,
+                "pageYOffset": 1086.666748046875,
+                "location": {
+                    "href": "https://terra-dev-plus-store.myshopify.com/checkouts/cn/hWN8doeAGdvplNbLG6gMGsTA/en-us/thank-you?_r=AQABVNmxueBfTu8ziA1uX4UV3bSfQE6qefKSeOoO7-ErI4g",
+                    "hash": "",
+                    "host": "terra-dev-plus-store.myshopify.com",
+                    "hostname": "terra-dev-plus-store.myshopify.com",
+                    "origin": "https://terra-dev-plus-store.myshopify.com",
+                    "pathname": "/checkouts/cn/hWN8doeAGdvplNbLG6gMGsTA/en-us/thank-you",
+                    "port": "",
+                    "protocol": "https:",
+                    "search": "?_r=AQABVNmxueBfTu8ziA1uX4UV3bSfQE6qefKSeOoO7-ErI4g"
+                },
+                "origin": "https://terra-dev-plus-store.myshopify.com",
+                "screen": {
+                    "height": 1112,
+                    "width": 1710
+                },
+                "screenX": 0,
+                "screenY": 39,
+                "scrollX": 0,
+                "scrollY": 1086.666748046875
+            }
+        },
+        "seq": 1,
+        "clientId": "c39ac1e5-559b-49e3-bd26-481a67a4faf5"
+    },
+    "user_id": "8222774984858",
+    "shopify_customer_id": "8222774984858",
+    "transaction_id": "6188210716826"
+}

@@ -1,0 +1,112 @@
+console.log("TERRA_CHECKOUT_PIXEL_V3_ACTIVE");
+
+/* ================== ENV ================== */
+
+var TERRA_ENV = "prod"; // "dev" or "prod"
+
+var ENDPOINT = "";
+if (TERRA_ENV === "prod") {
+  ENDPOINT = "https://pixel-ingest-prod-279703303694.us-central1.run.app/v1/track";
+} else if (TERRA_ENV === "dev") {
+  ENDPOINT = "https://pixel-ingest-dev-600339193870.us-central1.run.app/v2/track";
+} else {
+  throw new Error("Invalid TERRA_ENV");
+}
+
+/* ================== UTILS ================== */
+
+function uuidv4() {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    var r = Math.random() * 16 | 0;
+    var v = c === "x" ? r : (r & 3 | 8);
+    return v.toString(16);
+  });
+}
+
+function digits(x) {
+  return String(x || "").replace(/\D/g, "");
+}
+
+function getAttr(key, attrs) {
+  if (!attrs || !attrs.length) return null;
+  for (var i = 0; i < attrs.length; i++) {
+    if (attrs[i].key === key) return attrs[i].value;
+  }
+  return null;
+}
+
+/* ================== CORE POST ================== */
+
+function post(payload) {
+  try {
+    fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      keepalive: true,
+      body: JSON.stringify(payload)
+    });
+  } catch (_) {}
+}
+
+function basePayload(event_name, ev) {
+  var checkout = ev.data.checkout;
+  var attrs = checkout.attributes || [];
+
+  return {
+    data_source: "shopify_checkout_pixel",
+    event_name: event_name,
+    event_id: ev.id ? String(ev.id) : uuidv4(),
+    event_time: new Date().toISOString(),
+
+    // ===== REQUIRED IDENTITY KEYS =====
+    checkout_id: checkout.id,
+    th_vid: getAttr("th_vid", attrs),
+    ga_client_id: getAttr("ga4_client_id", attrs),
+
+    raw: ev
+  };
+}
+
+/* ================== CHECKOUT STEPS ================== */
+
+[
+  "checkout_started",
+  "checkout_contact_info_submitted",
+  "checkout_address_info_submitted",
+  "checkout_shipping_info_submitted",
+  "payment_info_submitted"
+].forEach(function (name) {
+  analytics.subscribe(name, function (ev) {
+    if (!ev || !ev.data || !ev.data.checkout) return;
+    post(basePayload(name, ev));
+  });
+});
+
+/* === PURCHASE (IDENTITY AVAILABLE) ================== */
+
+analytics.subscribe("checkout_completed", function (ev) {
+  if (!ev || !ev.data || !ev.data.checkout) return;
+
+  var checkout = ev.data.checkout;
+  var payload = basePayload("checkout_completed", ev);
+
+  var customerId =
+    (checkout.customer && checkout.customer.id) ||
+    (checkout.order &&
+     checkout.order.customer &&
+     checkout.order.customer.id) ||
+    null;
+
+  payload.user_id = customerId ? String(customerId) : null;
+  payload.shopify_customer_id = payload.user_id;
+
+  payload.transaction_id = digits(
+    checkout.order && checkout.order.id
+  );
+
+  post(payload);
+});
+
+
+
+

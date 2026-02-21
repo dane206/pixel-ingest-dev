@@ -36,13 +36,13 @@
       window.__terra_gtm_loaded__ = true;
 
       // flush queued events
-      for (var i = 0; i < window.__terra_event_queue__.length; i++) {
-        var evt = window.__terra_event_queue__[i];
+      for (var q = 0; q < window.__terra_event_queue__.length; q++) {
+        var evt = window.__terra_event_queue__[q];
 
         // Defer identity until attribution is present
         if (evt.event === "terra_identity_ready") {
           var hasAttribution = window.dataLayer.some(function (e) {
-            return e.event === "terra_attribution_layer";
+            return e.event === "terra_attribution_ready";
           });
 
           if (!hasAttribution) {

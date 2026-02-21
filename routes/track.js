@@ -3,7 +3,7 @@ import { forwardCheckoutToGA4 } from "../adapters/ga4.adapter.js";
 
 export default async function trackRoute(req, res) {
   try {
-    const body = req.body || {};
+    const body = req.body || {}; // ← ENTRY BREAKPOINT
 
     const events = Array.isArray(body?.events)
       ? body.events
@@ -14,9 +14,9 @@ export default async function trackRoute(req, res) {
     const rows = [];
 
     for (let i = 0; i < events.length; i++) {
-      const ev = events[i] || {};
+      const ev = events[i] || {}; // ← NORMALIZATION BREAKPOINT
 
-      let rawObject = ev.raw;
+      let rawObject = ev.raw; // ← RAW DEBUG BREAKPOINT
       
       // unwrap nested envelope if present
       if (
@@ -51,7 +51,7 @@ export default async function trackRoute(req, res) {
 	  });
     }
 
-    await insertBQ(rows);
+    await insertBQ(rows);  // ← WAREHOUSE BREAKPOINT
 
     // Only forward checkout pixel to GA4
     for (let i = 0; i < events.length; i++) {
@@ -59,7 +59,7 @@ export default async function trackRoute(req, res) {
       if (ev.data_source !== "shopify_checkout_pixel") continue;
 
       try {
-        await forwardCheckoutToGA4(ev);
+        await forwardCheckoutToGA4(ev); // ← GA4 BREAKPOINT
       } catch (_) {}
     }
 

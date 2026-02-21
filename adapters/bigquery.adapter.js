@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename);
 
 const schema = JSON.parse(
   fs.readFileSync(
-    path.join(__dirname, "../schemas/raw-events.schema.json"),
+    path.join(__dirname, "../schemas/raw-events.bq.json"),
     "utf8"
   )
 );

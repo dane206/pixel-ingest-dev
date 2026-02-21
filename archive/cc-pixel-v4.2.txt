@@ -1,0 +1,25 @@
+decision
+
+/* ================== STOREFRONT EVENTS ================== */
+
+[
+  "page_viewed",
+  "product_viewed",
+  "collection_viewed",
+  "product_added_to_cart",
+  "product_removed_from_cart",
+  "search_submitted",
+  "cart_viewed"
+].forEach(function (name) {
+  analytics.subscribe(name, function (ev) {
+    if (!ev || !ev.data) return;
+
+    post({
+      data_source: "shopify_web_pixel",
+      event_name: name,
+      event_id: ev.id ? String(ev.id) : uuidv4(),
+      event_time: new Date().toISOString(),
+      raw: ev
+    });
+  });
+});

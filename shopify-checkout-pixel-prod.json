@@ -1,0 +1,626 @@
+{
+    "data_source": "shopify_checkout_pixel",
+    "event_name": "checkout_started",
+    "event_id": "sh-53bb6c4e-187D-4B27-36D5-4595D749E5BA",
+    "event_time": "2026-02-12T21:21:56.198Z",
+    "th_vid": "ee7c3f48-881d-4251-8bdb-d472515d02b1",
+    "ga_client_id": "1762413867.1769646076",
+    "raw": {
+        "id": "sh-53bb6c4e-187D-4B27-36D5-4595D749E5BA",
+        "name": "checkout_started",
+        "data": {
+            "checkout": {
+                "buyerAcceptsEmailMarketing": false,
+                "buyerAcceptsSmsMarketing": false,
+                "attributes": [
+                    {
+                        "key": "th_vid",
+                        "value": "ee7c3f48-881d-4251-8bdb-d472515d02b1"
+                    },
+                    {
+                        "key": "session_key",
+                        "value": "7d177750-be51-4cdd-878a-fd9cb11af576"
+                    },
+                    {
+                        "key": "session_start",
+                        "value": "2026-02-12T21:21:37.629Z"
+                    },
+                    {
+                        "key": "terra_ga_cid",
+                        "value": "1762413867.1769646076"
+                    },
+                    {
+                        "key": "ga4_client_id",
+                        "value": "1762413867.1769646076"
+                    },
+                    {
+                        "key": "terra_ga_sid",
+                        "value": "1770931298"
+                    },
+                    {
+                        "key": "ga4_session_id",
+                        "value": "1770931298"
+                    },
+                    {
+                        "key": "terra_ga_sn",
+                        "value": "4"
+                    },
+                    {
+                        "key": "ga4_session_number",
+                        "value": "4"
+                    },
+                    {
+                        "key": "terra_ft_source",
+                        "value": "edu"
+                    },
+                    {
+                        "key": "terra_ft_medium",
+                        "value": "email_flow"
+                    },
+                    {
+                        "key": "terra_ft_campaign",
+                        "value": "50% Off Add-On Upsell Test #4 August 11, 2025 Variation B"
+                    },
+                    {
+                        "key": "terra_ft_content",
+                        "value": "TheUncomfortableTruthAboutBacterialVaginosis"
+                    },
+                    {
+                        "key": "terra_lt_source",
+                        "value": "klaviyo"
+                    },
+                    {
+                        "key": "terra_lt_medium",
+                        "value": "email_campaign"
+                    },
+                    {
+                        "key": "terra_lt_campaign",
+                        "value": "2.11.26 Bundle Builder - Generic"
+                    },
+                    {
+                        "key": "edge_delivery_enabled",
+                        "value": "true"
+                    },
+                    {
+                        "key": "edge_delivery",
+                        "value": "true"
+                    },
+                    {
+                        "key": "edge_delivery_session_id",
+                        "value": "d41887b1-cde4-4676-aa8d-253ef9151c44"
+                    },
+                    {
+                        "key": "edge_delivery_visitor_id",
+                        "value": "1e8dc6ed-a585-4c9a-8cc6-07f561ec6f72"
+                    },
+                    {
+                        "key": "edge_delivery_experiment_id",
+                        "value": "b858a964-b48a-44b5-9a05-9bb713c86e7a"
+                    }
+                ],
+                "billingAddress": {
+                    "address1": null,
+                    "address2": null,
+                    "city": null,
+                    "country": "US",
+                    "countryCode": "US",
+                    "firstName": null,
+                    "lastName": null,
+                    "phone": null,
+                    "province": "WA",
+                    "provinceCode": "WA",
+                    "zip": null
+                },
+                "token": "c47fba9f7b2aeca2bc2deb3579de0acc",
+                "currencyCode": "USD",
+                "discountApplications": [],
+                "discountsAmount": {
+                    "amount": 0,
+                    "currencyCode": "USD"
+                },
+                "email": "",
+                "phone": "",
+                "lineItems": [
+                    {
+                        "discountAllocations": [],
+                        "id": "43035675590847",
+                        "quantity": 1,
+                        "title": "Liposomal Vitamin B12",
+                        "variant": {
+                            "id": "43035675590847",
+                            "image": {
+                                "src": "https://cdn.shopify.com/s/files/1/0624/5810/1951/files/liposomal-vitamin-b12terra-health-essentials-347124.png?v=1720479550"
+                            },
+                            "price": {
+                                "amount": 39,
+                                "currencyCode": "USD"
+                            },
+                            "product": {
+                                "id": "7687408287935",
+                                "title": "Liposomal Vitamin B12",
+                                "vendor": "Terra Health Essentials",
+                                "type": "Vitamins & Supplements",
+                                "untranslatedTitle": "Liposomal Vitamin B12",
+                                "url": "/products/liposomal-vitamin-b12"
+                            },
+                            "sku": "THELIPOB12B1",
+                            "title": "30 Day Supply - OTP",
+                            "untranslatedTitle": "30 Day Supply - OTP"
+                        },
+                        "finalLinePrice": {
+                            "amount": 39,
+                            "currencyCode": "USD"
+                        },
+                        "sellingPlanAllocation": null,
+                        "properties": []
+                    }
+                ],
+                "localization": {
+                    "country": {
+                        "isoCode": "US"
+                    },
+                    "language": {
+                        "isoCode": "en-US"
+                    },
+                    "market": {
+                        "id": "gid://shopify/Market/22437560511",
+                        "handle": "us"
+                    }
+                },
+                "order": {
+                    "id": null,
+                    "customer": {
+                        "id": null,
+                        "isFirstOrder": null
+                    }
+                },
+                "delivery": {
+                    "selectedDeliveryOptions": []
+                },
+                "shippingAddress": {
+                    "address1": null,
+                    "address2": null,
+                    "city": null,
+                    "country": "US",
+                    "countryCode": "US",
+                    "firstName": null,
+                    "lastName": null,
+                    "phone": null,
+                    "province": "WA",
+                    "provinceCode": "WA",
+                    "zip": null
+                },
+                "subtotalPrice": {
+                    "amount": 39,
+                    "currencyCode": "USD"
+                },
+                "shippingLine": {
+                    "price": {
+                        "amount": 0,
+                        "currencyCode": "USD"
+                    }
+                },
+                "smsMarketingPhone": null,
+                "totalTax": {
+                    "amount": 0,
+                    "currencyCode": "USD"
+                },
+                "totalPrice": {
+                    "amount": 39,
+                    "currencyCode": "USD"
+                },
+                "transactions": []
+            }
+        },
+        "type": "standard",
+        "timestamp": "2026-02-12T21:21:55.818Z",
+        "context": {
+            "document": {
+                "location": {
+                    "href": "https://www.terrahealthessentials.com/checkouts/cn/hWN8iFCpBlujakccpPErscBc/en-us?_r=AQAB6udaRX3_m3i6U4gS74jiJ9EXJRNi9--dghzAWY5wZAQ&auto_redirect=false&edge_redirect=true&ra=2&skip_shop_pay=true",
+                    "hash": "",
+                    "host": "www.terrahealthessentials.com",
+                    "hostname": "www.terrahealthessentials.com",
+                    "origin": "https://www.terrahealthessentials.com",
+                    "pathname": "/checkouts/cn/hWN8iFCpBlujakccpPErscBc/en-us",
+                    "port": "",
+                    "protocol": "https:",
+                    "search": "?_r=AQAB6udaRX3_m3i6U4gS74jiJ9EXJRNi9--dghzAWY5wZAQ&auto_redirect=false&edge_redirect=true&ra=2&skip_shop_pay=true"
+                },
+                "referrer": "https://www.terrahealthessentials.com/checkouts/cn/hWN8iFCpBlujakccpPErscBc/en-us?_r=AQAB6udaRX3_m3i6U4gS74jiJ9EXJRNi9--dghzAWY5wZAQ&auto_redirect=false&edge_redirect=true&skip_shop_pay=true",
+                "characterSet": "UTF-8",
+                "title": "Checkout - Terra Health Essentials"
+            },
+            "navigator": {
+                "language": "en-US",
+                "cookieEnabled": true,
+                "languages": [
+                    "en-US"
+                ],
+                "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"
+            },
+            "window": {
+                "innerHeight": 366,
+                "innerWidth": 1479,
+                "outerHeight": 983,
+                "outerWidth": 1479,
+                "pageXOffset": 0,
+                "pageYOffset": 0,
+                "location": {
+                    "href": "https://www.terrahealthessentials.com/checkouts/cn/hWN8iFCpBlujakccpPErscBc/en-us?_r=AQAB6udaRX3_m3i6U4gS74jiJ9EXJRNi9--dghzAWY5wZAQ&auto_redirect=false&edge_redirect=true&ra=2&skip_shop_pay=true",
+                    "hash": "",
+                    "host": "www.terrahealthessentials.com",
+                    "hostname": "www.terrahealthessentials.com",
+                    "origin": "https://www.terrahealthessentials.com",
+                    "pathname": "/checkouts/cn/hWN8iFCpBlujakccpPErscBc/en-us",
+                    "port": "",
+                    "protocol": "https:",
+                    "search": "?_r=AQAB6udaRX3_m3i6U4gS74jiJ9EXJRNi9--dghzAWY5wZAQ&auto_redirect=false&edge_redirect=true&ra=2&skip_shop_pay=true"
+                },
+                "origin": "https://www.terrahealthessentials.com",
+                "screen": {
+                    "height": 1112,
+                    "width": 1710
+                },
+                "screenX": 0,
+                "screenY": 39,
+                "scrollX": 0,
+                "scrollY": 0
+            }
+        },
+        "seq": 1,
+        "clientId": "ce1e3524-0b71-4d48-8f91-5749e86ed893"
+    }
+}
+
+{
+    "data_source": "shopify_checkout_pixel",
+    "event_name": "checkout_completed",
+    "event_id": "1c1b6706-ff44-465a-b696-2d7517f37e4e",
+    "event_time": "2026-02-12T21:22:50.649Z",
+    "th_vid": "ee7c3f48-881d-4251-8bdb-d472515d02b1",
+
+    "raw": {
+        "id": "1c1b6706-ff44-465a-b696-2d7517f37e4e",
+        "name": "checkout_completed",
+        "data": {
+            "checkout": {
+                "buyerAcceptsEmailMarketing": true,
+                "buyerAcceptsSmsMarketing": false,
+                "attributes": [
+                    {
+                        "key": "th_vid",
+                        "value": "ee7c3f48-881d-4251-8bdb-d472515d02b1",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "session_key",
+                        "value": "7d177750-be51-4cdd-878a-fd9cb11af576",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "session_start",
+                        "value": "2026-02-12T21:21:37.629Z",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "terra_ga_cid",
+                        "value": "1762413867.1769646076",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "ga4_client_id",
+                        "value": "1762413867.1769646076",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "terra_ga_sid",
+                        "value": "1770931298",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "ga4_session_id",
+                        "value": "1770931298",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "terra_ga_sn",
+                        "value": "4",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "ga4_session_number",
+                        "value": "4",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "terra_ft_source",
+                        "value": "edu",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "terra_ft_medium",
+                        "value": "email_flow",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "terra_ft_campaign",
+                        "value": "50% Off Add-On Upsell Test #4 August 11, 2025 Variation B",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "terra_ft_content",
+                        "value": "TheUncomfortableTruthAboutBacterialVaginosis",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "terra_lt_source",
+                        "value": "klaviyo",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "terra_lt_medium",
+                        "value": "email_campaign",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "terra_lt_campaign",
+                        "value": "2.11.26 Bundle Builder - Generic",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "edge_delivery_enabled",
+                        "value": "true",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "edge_delivery",
+                        "value": "true",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "edge_delivery_session_id",
+                        "value": "d41887b1-cde4-4676-aa8d-253ef9151c44",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "edge_delivery_visitor_id",
+                        "value": "1e8dc6ed-a585-4c9a-8cc6-07f561ec6f72",
+                        "__typename": "NoteAttribute"
+                    },
+                    {
+                        "key": "edge_delivery_experiment_id",
+                        "value": "b858a964-b48a-44b5-9a05-9bb713c86e7a",
+                        "__typename": "NoteAttribute"
+                    }
+                ],
+                "billingAddress": {
+                    "address1": "1715 harbor ave sw # 2",
+                    "address2": null,
+                    "city": "seattle",
+                    "country": "US",
+                    "countryCode": "US",
+                    "firstName": "dane",
+                    "lastName": "h",
+                    "phone": "2067784125",
+                    "province": "WA",
+                    "provinceCode": "WA",
+                    "zip": "98126"
+                },
+                "token": "c47fba9f7b2aeca2bc2deb3579de0acc",
+                "currencyCode": "USD",
+                "discountApplications": [
+                    {
+                        "allocationMethod": "ACROSS",
+                        "targetSelection": "ALL",
+                        "targetType": "LINE_ITEM",
+                        "title": "rs2mgmt99x",
+                        "type": "DISCOUNT_CODE",
+                        "value": {
+                            "percentage": 95
+                        }
+                    }
+                ],
+                "discountsAmount": {
+                    "amount": 37.05,
+                    "currencyCode": "USD"
+                },
+                "email": "dane@rs2media.com",
+                "phone": null,
+                "lineItems": [
+                    {
+                        "discountAllocations": [
+                            {
+                                "amount": {
+                                    "amount": 37.05,
+                                    "currencyCode": "USD"
+                                },
+                                "discountApplication": {
+                                    "allocationMethod": "ACROSS",
+                                    "targetSelection": "ALL",
+                                    "targetType": "LINE_ITEM",
+                                    "title": "rs2mgmt99x",
+                                    "type": "DISCOUNT_CODE",
+                                    "value": {
+                                        "percentage": 95
+                                    }
+                                }
+                            }
+                        ],
+                        "id": "43035675590847",
+                        "quantity": 1,
+                        "title": "Liposomal Vitamin B12",
+                        "variant": {
+                            "id": "43035675590847",
+                            "image": {
+                                "src": "https://cdn.shopify.com/s/files/1/0624/5810/1951/files/liposomal-vitamin-b12terra-health-essentials-347124.png?v=1720479550"
+                            },
+                            "price": {
+                                "amount": 39,
+                                "currencyCode": "USD"
+                            },
+                            "product": {
+                                "id": "7687408287935",
+                                "title": "Liposomal Vitamin B12",
+                                "vendor": "Terra Health Essentials",
+                                "type": "Vitamins & Supplements",
+                                "untranslatedTitle": "Liposomal Vitamin B12",
+                                "url": "/products/liposomal-vitamin-b12"
+                            },
+                            "sku": "THELIPOB12B1",
+                            "title": "30 Day Supply - OTP",
+                            "untranslatedTitle": "30 Day Supply - OTP"
+                        },
+                        "finalLinePrice": {
+                            "amount": 39,
+                            "currencyCode": "USD"
+                        },
+                        "sellingPlanAllocation": null,
+                        "properties": []
+                    }
+                ],
+                "localization": {
+                    "country": {
+                        "isoCode": "US"
+                    },
+                    "language": {
+                        "isoCode": "en-US"
+                    },
+                    "market": {
+                        "id": "gid://shopify/Market/22437560511",
+                        "handle": "us"
+                    }
+                },
+                "order": {
+                    "id": "6928606527679",
+                    "customer": {
+                        "id": "7601502388415",
+                        "isFirstOrder": false
+                    }
+                },
+                "delivery": {
+                    "selectedDeliveryOptions": [
+                        {
+                            "cost": {
+                                "amount": 6.9,
+                                "currencyCode": "USD"
+                            },
+                            "costAfterDiscounts": {
+                                "amount": 6.9,
+                                "currencyCode": "USD"
+                            },
+                            "description": "2-4 business days",
+                            "handle": "c47fba9f7b2aeca2bc2deb3579de0acc-8812bde6820ddc326ba9f8f4f772a075",
+                            "title": "Fast Shipping USA (Tracked)",
+                            "type": "shipping"
+                        }
+                    ]
+                },
+                "shippingAddress": {
+                    "address1": "1715 harbor ave sw # 2",
+                    "address2": null,
+                    "city": "seattle",
+                    "country": "US",
+                    "countryCode": "US",
+                    "firstName": "dane",
+                    "lastName": "h",
+                    "phone": "2067784125",
+                    "province": "WA",
+                    "provinceCode": "WA",
+                    "zip": "98126"
+                },
+                "subtotalPrice": {
+                    "amount": 1.95,
+                    "currencyCode": "USD"
+                },
+                "shippingLine": {
+                    "price": {
+                        "amount": 6.9,
+                        "currencyCode": "USD"
+                    }
+                },
+                "smsMarketingPhone": null,
+                "totalTax": {
+                    "amount": 0,
+                    "currencyCode": "USD"
+                },
+                "totalPrice": {
+                    "amount": 8.85,
+                    "currencyCode": "USD"
+                },
+                "transactions": [
+                    {
+                        "amount": {
+                            "amount": 8.85,
+                            "currencyCode": "USD"
+                        },
+                        "gateway": "shopify_payments",
+                        "paymentMethod": {
+                            "type": "creditCard",
+                            "name": "VISA"
+                        }
+                    }
+                ]
+            }
+        },
+        "type": "standard",
+        "timestamp": "2026-02-12T21:22:50.623Z",
+        "context": {
+            "document": {
+                "location": {
+                    "href": "https://www.terrahealthessentials.com/checkouts/cn/hWN8iFCpBlujakccpPErscBc/en-us/post-purchase?_r=AQAB6udaRX3_m3i6U4gS74jiJ9EXJRNi9--dghzAWY5wZAQ&auto_redirect=false&edge_redirect=true&ra=2&skip_shop_pay=true",
+                    "hash": "",
+                    "host": "www.terrahealthessentials.com",
+                    "hostname": "www.terrahealthessentials.com",
+                    "origin": "https://www.terrahealthessentials.com",
+                    "pathname": "/checkouts/cn/hWN8iFCpBlujakccpPErscBc/en-us/post-purchase",
+                    "port": "",
+                    "protocol": "https:",
+                    "search": "?_r=AQAB6udaRX3_m3i6U4gS74jiJ9EXJRNi9--dghzAWY5wZAQ&auto_redirect=false&edge_redirect=true&ra=2&skip_shop_pay=true"
+                },
+                "referrer": "https://www.terrahealthessentials.com/checkouts/cn/hWN8iFCpBlujakccpPErscBc/en-us?_r=AQAB6udaRX3_m3i6U4gS74jiJ9EXJRNi9--dghzAWY5wZAQ&auto_redirect=false&edge_redirect=true&skip_shop_pay=true",
+                "characterSet": "UTF-8",
+                "title": "Checkout - Terra Health Essentials"
+            },
+            "navigator": {
+                "language": "en-US",
+                "cookieEnabled": true,
+                "languages": [
+                    "en-US"
+                ],
+                "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"
+            },
+            "window": {
+                "innerHeight": 366,
+                "innerWidth": 1479,
+                "outerHeight": 983,
+                "outerWidth": 1479,
+                "pageXOffset": 0,
+                "pageYOffset": 0,
+                "location": {
+                    "href": "https://www.terrahealthessentials.com/checkouts/cn/hWN8iFCpBlujakccpPErscBc/en-us/post-purchase?_r=AQAB6udaRX3_m3i6U4gS74jiJ9EXJRNi9--dghzAWY5wZAQ&auto_redirect=false&edge_redirect=true&ra=2&skip_shop_pay=true",
+                    "hash": "",
+                    "host": "www.terrahealthessentials.com",
+                    "hostname": "www.terrahealthessentials.com",
+                    "origin": "https://www.terrahealthessentials.com",
+                    "pathname": "/checkouts/cn/hWN8iFCpBlujakccpPErscBc/en-us/post-purchase",
+                    "port": "",
+                    "protocol": "https:",
+                    "search": "?_r=AQAB6udaRX3_m3i6U4gS74jiJ9EXJRNi9--dghzAWY5wZAQ&auto_redirect=false&edge_redirect=true&ra=2&skip_shop_pay=true"
+                },
+                "origin": "https://www.terrahealthessentials.com",
+                "screen": {
+                    "height": 1112,
+                    "width": 1710
+                },
+                "screenX": 0,
+                "screenY": 39,
+                "scrollX": 0,
+                "scrollY": 0
+            }
+        },
+        "seq": 1,
+        "clientId": "ce1e3524-0b71-4d48-8f91-5749e86ed893"
+    },
+
+}
