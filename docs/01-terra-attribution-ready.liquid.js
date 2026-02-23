@@ -264,11 +264,36 @@ IMPORTANT:
      - Push only when attribution was observed (UTM or click id)
   ========================= */
 
+  if (window.terraPushEvent) {
+  window.terraPushEvent(
+    "terra_attribution_ready",
+    {
+      // Observed or synthesized UTMs for this hit
+      utm_source: utm.source || "",
+      utm_medium: utm.medium || "",
+      utm_campaign: utm.campaign || "",
+      utm_content: utm.content || "",
+      utm_term: utm.term || "",
+      utm_id: utm.id || "",
+
+      // Observed click IDs for this hit
+      gclid: click.gclid || "",
+      gbraid: click.gbraid || "",
+      wbraid: click.wbraid || "",
+      msclkid: click.msclkid || "",
+      fbclid: click.fbclid || "",
+      ttclid: click.ttclid || "",
+
+      terra_cookie_domain: cookieDomainForHost() || "(host-only)"
+    }
+  );
+} else {
+  // HARD fallback (should almost never run)
   window.dataLayer.push({
     event: "terra_attribution_ready",
+    event_id: String(Date.now()),
     timestamp: nowIso(),
 
-    // Observed or synthesized UTMs for this hit
     utm_source: utm.source || "",
     utm_medium: utm.medium || "",
     utm_campaign: utm.campaign || "",
@@ -276,7 +301,6 @@ IMPORTANT:
     utm_term: utm.term || "",
     utm_id: utm.id || "",
 
-    // Observed click IDs for this hit
     gclid: click.gclid || "",
     gbraid: click.gbraid || "",
     wbraid: click.wbraid || "",
@@ -284,9 +308,9 @@ IMPORTANT:
     fbclid: click.fbclid || "",
     ttclid: click.ttclid || "",
 
-    // Debug: cookie domain decision
     terra_cookie_domain: cookieDomainForHost() || "(host-only)"
   });
+}
 
-})();
+})();  // ← CLOSES IIFE (critical)
 </script>

@@ -42,7 +42,7 @@ export default async function trackRoute(req, res) {
       }
 
 	  rows.push({
-	    received_at: new Date(),
+	    received_at: new Date().toISOString(),
 	    data_source: ev.data_source || "unknown",
 	    event_name: ev.event_name || null,
 	    event_id: ev.event_id ? String(ev.event_id) : null,
@@ -69,4 +69,4 @@ export default async function trackRoute(req, res) {
     console.error("TRACK ROUTE ERROR:", err);
     res.status(500).end();
   }
-}
+}typeof ev !== "undefined" ? ev.data_source : undefined
