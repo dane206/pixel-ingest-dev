@@ -43,9 +43,7 @@ app.use(
 );
 
 /* Routes */
-app.post("/v1/track", trackRouteV2);
 app.post("/v2/track", trackRouteV2);
-app.post("/track", trackRouteV2);
 
 app.get("/health", function (_req, res) {
   res.status(200).send("ok");
